@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Ajax form</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+<body>
+<h1>This is my form</h1>
+
+
+<form id="myForm" onsubmit="return false;" >
+    Name:<br>
+    <input type="text" name="name" value="">
+    <br>
+    Surname:
+    <br>
+    <input type="text" name="surname" value="">
+    <br>
+    DayOfBirth:
+    <br>
+    <input type="text" name="dob" value="">
+    <br>
+
+    <button id="sendButton">Send Data</button>
+</form>
+
+
+<script>
+
+    function sendAjaxQuery(url, data) {
+            $.ajax({
+                    url: url,
+                    data: data,
+                    dataType:'json',
+                    type: 'POST',
+//                    timeout: 10000,
+                    success: function (dataR) {
+                        var ret = JSON.stringify(dataR);
+                        var dataP = JSON.Parse(dataR);
+                       // var xxx=JSON.Parse(dataR);
+                        alert('Success:'+ dataP);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error:111' + error.message);
+
+                    }
+                });
+
+        }
+
+      $.fn.serializeObject = function () {
+          var o = {};
+          var a = this.serializeArray();
+          $.each(a, function () {
+              if (o[this.name] !== undefined) {
+                  if (!o[this.name].push) {
+                      o[this.name] = [o[this.name]];
+                  }
+                  o[this.name].push(this.value || '');
+              } else {
+                  o[this.name] = this.value || '';
+              }
+          });
+          return o;
+      };
+
+      function sendData() {
+          var form = document.getElementById('myForm');
+          sendAjaxQuery('http://localhost:3001/postFile.html', JSON.stringify($('form').serializeObject()));
+      }
+
+
+      var sendButton = document.getElementById('sendButton');
+      sendButton.onclick = sendData;
+</script>
+
+
+</body>
+</html>
