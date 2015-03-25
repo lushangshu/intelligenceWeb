@@ -1,3 +1,0 @@
-https://apigee.com/console/foursquare
-
-https://dev.twitter.com/rest/tools/console
