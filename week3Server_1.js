@@ -39,8 +39,6 @@ var app = protocol.createServer(function (req, res) {
         req.on('data', function (data) {
             body += data;
         });
-        
-    
         req.on('end', function () {
             body= JSON.parse(body);
             var query= body.query;
@@ -55,7 +53,7 @@ var app = protocol.createServer(function (req, res) {
                     
                     res.writeHead(200, { "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*'});
                     //console.log('body: ' + data);
-
+                    res.end(JSON.stringify(data));
                     //res.end(JSON.stringify(data));
                     console.log("111111111111111");
                  }
@@ -83,7 +81,7 @@ var app = protocol.createServer(function (req, res) {
                     
                     res.writeHead(200, { "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*'});
                     //console.log('body: ' + data);
-
+                    res.end(JSON.stringify(data));
                     //res.end(JSON.stringify(data));
                     console.log("2222222222");
                  }
@@ -112,7 +110,7 @@ var app = protocol.createServer(function (req, res) {
                     
                     res.writeHead(200, { "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*'});
                     //console.log('body: ' + data);
-
+                    res.end(JSON.stringify(data));
                     //res.end(JSON.stringify(data));
                     console.log("33333333323333333");
                  }
