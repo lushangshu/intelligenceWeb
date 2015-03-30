@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Ajax form</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+<body>
+<h1>This is my form</h1>
+
+
+<form id="myForm" onsubmit="return false;" >
+    Retrieve all tweets sent from a radius of 200km from London discussing the word ‘drone’:<br>
+    <input type="text" name="query" value="">
+    <br>
+    <button id="sendButton">Send Data</button>
+    <br>
+
+<form id="myForm1" onsubmit="return false;" >
+    Retrieve all messages written by Stephen Fry (@stephenfry) discussing iphone:<br>
+    <input type="text" name="query" value="">
+    <br>
+    <button id="sendButton1">Send Data</button>
+    <br>
+
+<form id="myForm2" onsubmit="return false;" >
+    get the profile and 200 friends of Stephen Fry:<br>
+    <input type="text" name="query" value="">
+    <br>
+    <button id="sendButton2">Send Data</button>
+</form>
+ 
+
+<script>
+
+    function sendAjaxQuery(url, data) {
+            $.ajax({
+                    url: url,
+                    data: data,
+                    dataType:'json',
+                    type: 'POST',
+//                    timeout: 10000,
+                    success: function (dataR) {
+                        var ret = JSON.stringify(dataR);
+                        alert('Success: '+ ret);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error: ' + error.message);
+
+                    }
+                });
+
+        }
+
+      $.fn.serializeObject = function () {
+          var o = {};
+          var a = this.serializeArray();
+          $.each(a, function () {
+              if (o[this.name] !== undefined) {
+                  if (!o[this.name].push) {
+                      o[this.name] = [o[this.name]];
+                  }
+                  o[this.name].push(this.value || '');
+              } else {
+                  o[this.name] = this.value || '';
+              }
+          });
+          return o;
+      };
+
+      function sendData() {
+          var form= document.getElementById('myForm');
+          sendAjaxQuery('http://localhost:3001/postFile.html', JSON.stringify($('form').serializeObject()));
+      }
+      function sendData1() {
+          var form = document.getElementById('myForm1');
+           sendAjaxQuery('http://localhost:3001/postFile1.html', JSON.stringify($('form').serializeObject()));
+       }
+      
+       function sendData2() {
+           var form = document.getElementById('myForm2');
+           sendAjaxQuery('http://localhost:3001/postFile2.html', JSON.stringify($('form').serializeObject()));
+       }
+
+      
+
+
+      var sendButton = document.getElementById('sendButton');
+      sendButton.onclick = sendData;
+      
+      var sendButton1 = document.getElementById('sendButton1');
+      sendButton1.onclick = sendData1;
+      
+      var sendButton2 = document.getElementById('sendButton2');
+       sendButton2.onclick = sendData2;
+</script>
+
+
+</body>
+</html>

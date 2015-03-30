@@ -5,3 +5,6 @@ https://dev.twitter.com/rest/tools/console
 这个链接是搜索关于drone话题的离伦敦200km半径范围的tweets的api的url
 * 但是这个链接需要Authen的那个验证 具体应该在代码里有体现
 https://api.twitter.com/1.1/search/tweets.json?q=drone&geocode=51.5085300%2C-0.1257400%2C200mi
+Database:
+mysql -hstusql.dcs.shef.ac.uk -uteam075 -p team075
+62335627
