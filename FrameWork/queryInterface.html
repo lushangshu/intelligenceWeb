@@ -1,0 +1,153 @@
+<!-- code created by Shangshu Lu -->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Query Interface</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+<body>
+<h1>Query Interface</h1>
+
+<h3>Tracking discussions</h3>
+<form id="myForm" onsubmit="return false;" >
+    Tracking discussions:<br>
+    <input type="text" name="query" value="">
+    <br>
+    <button id="sendButton">Query</button>
+    <br>
+  </form>
+
+<h3>Query about specific users:</h3>
+<form id="myForm1" onsubmit="return false;" >
+    What specific users discuss about: <br>
+    Screen names:<input type="text" name="query_1" value=""><br>
+    How many keywords:<input type="text" name="query_2" value=""><br>
+    Number of days:<input type="text" name="query_3" value="">
+    <br>
+    <button id="sendButton1">Query</button>
+    <br><br>
+  </form>
+
+<!-- 不同表格的name对应的就是body.后面的属性的名称 方便调用 -->
+
+<form id="myForm2" onsubmit="return false;" >
+    What points of interest (venues) a specific user has visited in the last X days  <br>
+    User:<input type="text" name="user_id" value=""><br>
+    Number of days:<input type="text" name="days" value="">
+    <br>
+    <button id="sendButton2">Query</button>
+    <br><br>
+
+  </form>
+<form id="myForm3" onsubmit="return false;" >
+   Who is visiting venues in a specific geographic area (or visiting a named venue) or have done so in the last X days<br>
+    Location:<input type="text" name="query_6" value=""><br>
+    How many days:<input type="text" name="query_7" value="">
+    <br>
+    <button id="sendButton3">Query</button>
+</form>
+<br><h2>
+Below is the search Result:
+<h2>
+<div id="myDiv"><h3>Here's the result</h3></div>
+<!--<button type="button" onclick="myFunction()">通过 AJAX 改变内容</button>-->
+
+<script>
+
+    function sendAjaxQuery(url, data) {
+            $.ajax({
+                    url: url,
+                    data: data,
+                    dataType:'json',
+                    type: 'POST',
+//                    timeout: 10000,
+                    success: function (dataR) {
+                        var ret = JSON.stringify(dataR);
+                        alert('Success: '+ ret);
+                        myFunction(ret);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error: ' + error.message);
+                    }
+                });
+
+        }
+
+      $.fn.serializeObject = function () {
+          var o = {};
+          var a = this.serializeArray();
+          $.each(a, function () {
+              if (o[this.name] !== undefined) {
+                  if (!o[this.name].push) {
+                      o[this.name] = [o[this.name]];
+                  }
+                  o[this.name].push(this.value || '');
+              } else {
+                  o[this.name] = this.value || '';
+              }
+          });
+          return o;
+      };
+
+      function sendData() {
+          var form= document.getElementById('myForm');
+          sendAjaxQuery('http://localhost:3001/postFile.html', JSON.stringify($('form').serializeObject()));
+      }
+      function sendData1() {
+          var form = document.getElementById('myForm1');
+           sendAjaxQuery('http://localhost:3001/postFile1.html', JSON.stringify($('form').serializeObject()));
+       }
+      
+       function sendData2() {
+            var form = document.getElementById('myForm2');
+           sendAjaxQuery('http://localhost:3001/postFile2.html',JSON.stringify($('form').serializeObject()));
+
+       }
+       function sendData3() {
+           var form = document.getElementById('myForm3');
+           sendAjaxQuery('http://localhost:3001/postFile3.html', JSON.stringify($('form').serializeObject()));
+       }
+
+       function loadXMLDoc(url,cfunc)
+       {
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange=cfunc;
+        xmlhttp.open("GET",url,true);
+        xmlhttp.send();
+       }
+      function myFunction(dataShow)
+      {
+        document.getElementById("myDiv").innerHTML = dataShow;
+      }
+      
+      //part 1 --- 第一题的twitter请求
+      var sendButton = document.getElementById('sendButton');
+      sendButton.onclick = sendData;
+      //sendButton.onclick = myFunction;
+
+      //part 2-a --- 第二题的第一个问题
+      var sendButton1 = document.getElementById('sendButton1');
+      sendButton1.onclick = sendData1;
+      //sendButton1.onclick = myFunction;
+      
+      //part 2-b --- 第二题的第二个问题
+      var sendButton2 = document.getElementById('sendButton2');
+       sendButton2.onclick = sendData2;
+
+      //part 2-c --- 第二题的第二个问题
+      var sendButton3 = document.getElementById('sendButton3');
+      sendButton3.onclick = sendData3;
+
+</script>
+
+
+</body>
+</html>
