@@ -83,19 +83,17 @@ Below is the search Result:
             type:'POST',
             success: function(dataR){
               var ret = JSON.stringify(dataR);
-              alert('success: ' + ret);
+              //alert('success: ' + ret);
               var result = JSON.parse(ret);
-              //alert(result.statuses[0].created_at);
-              //var result = JSON.parse(ret);
-              //var retName = ret.status.id;
-              
               //alert('hot topic result success' + result.statuses);
-              // for (var indx in result.statuses) {
-              //       var tweet = result.statuses[indx];
-              //       var message = ' Date: '+tweet.created_at+' from:@ '+tweet.user.screen_name+' '+tweet.text;
-              //       myFunction(message);
-              //     }
-              myFunction(result.search_metadata.query);
+              var arrayResult = new Array(5);
+              for (var indx in result.statuses) {
+                    var tweet = result.statuses[indx];
+                    var message = ' Date: '+tweet.created_at+' from:@ '+tweet.user.screen_name+' '+tweet.text;
+                    arrayResult.push(message);
+                  }
+              alert('array'+arrayResult);
+              LSSmyFunction(arrayResult);
             },
             error:function(xhr,status,error){
               alert('Error: ' + error.message);
@@ -154,9 +152,9 @@ Below is the search Result:
         xmlhttp.open("GET",url,true);
         xmlhttp.send();
        }
-      function myFunction(dataShow)
+      function LSSmyFunction(result)
       {
-        document.getElementById("myDiv").innerHTML = dataShow;
+        document.getElementById("myDiv").innerHTML = result;
       }
       
       //part 1 --- 第一题的twitter请求

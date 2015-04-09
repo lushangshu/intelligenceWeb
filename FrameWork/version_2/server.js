@@ -109,8 +109,9 @@ var app = protocol.createServer(function (req, res) {
         req.on('end', function () {
             body= JSON.parse(body);
             var topic= body.topic;
-            var coordinates = body.coordinates+',20mi';
-            client.get('search/tweets', { q:topic,geocode:coordinates,count:2},function (err, data, response) {
+            //var coordinates = body.coordinates+',100mi';
+            var coordinates = body.coordinates;
+            client.get('search/tweets', { q:topic,geocode:coordinates,count:20},function (err, data, response) {
                 
                 // for (var indx in data.statuses) {
                 //     var tweet = data.statuses[indx];
@@ -121,7 +122,7 @@ var app = protocol.createServer(function (req, res) {
                 //  }
                  res.writeHead(200, { "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*'});
                  res.end(JSON.stringify(data));
-                console.log(data);
+                 console.log(data);
                  
             });
         });
