@@ -1,0 +1,5 @@
+逻辑代码写好，功能是分析所有人的所有tweets的keywords。输出keyword的频率排序
+
+现在name暂时写了一个，keywords数量为kwNum暂时写死为3，days写死为7。
+
+休息会，等会研究一下post穿参数。
