@@ -157,6 +157,8 @@ var app = protocol.createServer(function (req, res) {
             body += data;
         });
         req.on('end', function () {
+            var data1 = JSON.parse(body);
+            console.log(data1.user_id);
            PYZgetVenuseByUserId(body.user_id,body.days,accessToken);
         });
     }
@@ -170,7 +172,9 @@ var app = protocol.createServer(function (req, res) {
             body += data;
         });
         req.on('end', function () {
-            LSSgetVenueCoordinates(body.c_location,body.c_days,accessToken,LSSgetUserList);
+            var result = JSON.parse(body);
+            //console.log(body.c_location);
+            LSSgetVenueCoordinates(result.c_location,result.c_days,accessToken,LSSgetUserList);
             });
        
     }
@@ -235,12 +239,14 @@ function LSSgetVenueCoordinates(locationQuery,days,oauth_token,callback)
             venLat = jsonRet.response.venues[0].location.lat;
             venLng = jsonRet.response.venues[0].location.lng;
             console.log('**Lat:' + venLat + '**Lng: '+venLng);
-            
+            console.log('1. start callback function');
+            callback(locationQuery,venLat,venLng,days);
+            console.log('location Query callback before ' + locationQuery);
         }
         else
              console.log('error: '+response.statusCode + 'response: '+JSON.parse(response.body).meta.errorDetail);
-        callback(locationQuery,venLat,venLng,days);
-        console.log('start callback function');
+        //callback(locationQuery,venLat,venLng,days);
+        
     });
     
    
@@ -249,21 +255,27 @@ function LSSgetVenueCoordinates(locationQuery,days,oauth_token,callback)
 
 function LSSgetUserList(venueName,lat,lng,days)
 {
-    console.log('callback function started');
-    var query = venueName + 'swarmapp.com/c';
-    var coordinates = lat+lng;
+    console.log('2. callback function started');
+    var query = venueName + ' swarmapp.com/c';
+    var coordinates = lat+','+lng+','+'20mi';
+    console.log('3. coordinates is :'+coordinates);
     var date = '2015-01-01';
-    client.get('search/tweets', { q: query,geocode:coordinates,until:date,count:30},function (err, data, response) { 
-        console.log('twitter request');
-    for (var indx in data.statuses) {
-        var tweet = data.statuses[indx];
-        console.log('username ****' + tweet.user.screen_name);
+    client.get('search/tweets', { q: query,geocode:coordinates,count:30},function (err, data, response) { 
+        console.log('query == '+ query);
+        var data_1 = JSON.stringify(data);
+        console.log('4. twitter request' + data_1);
+        for(var indx in data.statuses){
+            console.log('5. username ****'+data.statuses[indx].user.name);
+        }
+        
+        
         //console.log('on: ' + tweet.created_at);
         //console.log('@' + addslashes(tweet.user.screen_name));
         //console.log(addslashes(tweet.text));
         //res.writeHead(200, { "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*'});
         //res.end(JSON.stringify(data));
-    }
+    
+    console.log('6. tweeter log out finished');
 });
 }
 
