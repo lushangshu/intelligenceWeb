@@ -111,21 +111,21 @@ var app = protocol.createServer(function (req, res) {
             var topic= body.topic;
             var coordinates = body.coordinates+',20mi';
             var coordinates = body.coordinates;
-            client.get('search/tweets', { q:topic,geocode:coordinates,count:20},function (err, data, response) {           
-                // for (var indx in data.statuses) {
-                //     var tweet = data.statuses[indx];
-                //     console.log('---on: ' + tweet.created_at);
-                //     console.log('---@' + addslashes(tweet.user.screen_name));
-                //     console.log(addslashes(tweet.text));
-                    
-                //  }
+            clkTest(topic,coordinates);
+        });
+    }
+
+function clkTest(query,coordinates)
+{
+    
+    client.get('search/tweets', { q:query,geocode:coordinates,count:20},function (err, data, response) {           
                  res.writeHead(200, { "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*'});
                  res.end(JSON.stringify(data));
                  console.log(data);
                  
             });
-        });
-    }
+}
+
 
     //第二题的a ---->
     else  if ((req.method == 'POST') && (pathname == '/postFile1.html')){
@@ -199,6 +199,7 @@ var app = protocol.createServer(function (req, res) {
 }).listen(portNo);
         
 //other functions----Pengyuan Zhao
+
 function PYZgetVenuseByUserId(userid,days,oauth_token)
 {
     var options={

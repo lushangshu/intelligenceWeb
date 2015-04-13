@@ -10,9 +10,9 @@
 
 
 <form id="myForm" onsubmit="return false;" >
-    Test box for 2a:<br>
-    <input type="text" name="query" value="">
-    <br>
+    Screen Name: <input type="text" name="sName" value=""></input><br/>
+    How many Keywords: <input type = "text" name = "hKeywords"></input><br/>
+    How many days: <input type = "text" name = "hDays"></input><br/>
     <button id="sendButton">Send Data</button>
     <br>
 </form>
@@ -29,7 +29,7 @@
 //                    timeout: 10000,
                     success: function (dataR) {
                         var ret = JSON.stringify(dataR);
-                        alert('Success: '+ ret);
+                        //alert('Success: '+ ret);
                     },
                     error: function (xhr, status, error) {
                         alert('Error: ' + error.message);
