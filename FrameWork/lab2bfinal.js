@@ -139,17 +139,6 @@ function getPlaceCheckin(username,days,oAuthTkn){
             });
             connection.end();
 
-
-
-
-
-
-
-
-
-
-
-
     });
 }
 getPlaceCheckin('nepenthes9','7',accessToken)
