@@ -64,9 +64,9 @@ function waitCallBack(param1, callback) {
     }, param1);
 }
 
-//数据库部分代码 ---->
+//dotabase code ---->
 
-//建立数据库连接 这部分代码是实验课上的示例代码
+//initialize the connectiong of database -- lab code
 function setUpAndConnectMySQL()
 {
     connection.connect();
@@ -85,7 +85,7 @@ function setUpAndConnectMySQL()
     connection.end();
 }
 
-//表示
+//implement
 function searchHistory()
 {
 
@@ -101,7 +101,7 @@ var app = protocol.createServer(function (req, res) {
     var pathname = url.parse(req.url).pathname;
     var body = '';
 
-    //第一题的twitter ---->
+    //1 twitter ---->
     if ((req.method == 'POST') && (pathname == '/postFile.html')){
         var dataFin = {ok: 'ok'};
         req.on('data', function (data) {
@@ -121,7 +121,7 @@ var app = protocol.createServer(function (req, res) {
         });
     }
 
-    //第二题的a ---->
+    //2.a ---->
     else  if ((req.method == 'POST') && (pathname == '/postFile1.html')){
         var pathname = url.parse(req.url).pathname;
         var body = '';
@@ -139,7 +139,7 @@ var app = protocol.createServer(function (req, res) {
             clkTest(query, keywords, days);
         });
     }
-        //第二题的b ---->
+        //2.b ---->
     else if ((req.method == 'POST') && (pathname == '/postFile2.html')){
        
        var dataFin = {ok: 'ok'};
@@ -228,7 +228,7 @@ var app = protocol.createServer(function (req, res) {
     });
     }
 
-    //第二题的c ---->
+    //2.c ---->
      
     else if ((req.method == 'POST') && (pathname == '/postFile3.html')){
         console.log('start');
@@ -385,8 +385,6 @@ var app = protocol.createServer(function (req, res) {
                  //total tweet
                 textTotal += postData;
                 wordData = postData.split(" ");
-//               console.log(JSON.stringify(textTotal));
-//                console.log(textTotal);
 
                 //each name's keyword
                 //wordcount required init length
@@ -394,12 +392,8 @@ var app = protocol.createServer(function (req, res) {
                     for(i=0; i<wordData.length;i++){
                            // wordcount[i] = [];
                         for(var n=0; n<wordcount.length;n++){
-                           // console.log(n);
-                           // console.log(wordcount[0][0]);
                             if((n==(wordcount.length-1))&&((wordcount[n][0])!=wordData[i])){
-                            //console.log(n);
                                 wordcount[wordcount.length]=[wordData[i],1];
-                               // console.log(wordcount[n]);
                            }
                             else if((n!=(wordcount.length-1))&&((wordcount[n][0])==wordData[i]))
                                 {wordcount[n][1]++;
@@ -415,18 +409,14 @@ var app = protocol.createServer(function (req, res) {
 
 //endings
             if(wordSum.length==name.length){
-                                    //总的keyword
+                    //total keyword
                     textTotal = textTotal.replace(/(\r\n|\r|\n|  )/g," ");
                     wordTotal = textTotal.split(" ");
                         for(i=0; i<wordTotal.length;i++){
                            // wordcount[i] = [];
                             for(var n=0; n<wordcountTotal.length;n++){
-                           // console.log(n);
-                           // console.log(wordcount[0][0]);
                                 if((n==(wordcountTotal.length-1))&&((wordcountTotal[n][0])!=wordTotal[i])){
-                            //console.log(n);
                                     wordcountTotal[wordcountTotal.length]=[wordTotal[i],1];
-                               // console.log(wordcount[n]);
                                 }
                                 else if((n!=(wordcountTotal.length-1))&&((wordcountTotal[n][0])==wordTotal[i]))
                                     {wordcountTotal[n][1]++;
