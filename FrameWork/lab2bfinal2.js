@@ -101,9 +101,7 @@ function getPlaceCheckin(username,days,oAuthTkn){
                   method: 'GET',
                   headers: headers,
                   qs: {'shortId': stest[stest.length-1], 'oauth_token':oAuthTkn ,'v': '20140806', m: 'swarm'}
-                  }
-      
-        
+                  }  
                   request(options,function (error, response, body) {
               
                       if(!error && response.statusCode == 200) {
@@ -112,8 +110,8 @@ function getPlaceCheckin(username,days,oAuthTkn){
                               console.log(jsonObj.response.checkin.venue.id)
                               console.log(jsonObj.response.checkin.venue.name)
                               var querylocation=connection.query('SELECT * FROM locationVisited');
-                             var insertlocation= 'INSERT INTO locationVisited VALUES('+null+', '+data.statuses[0].user.id+',\''+jsonObj.response.checkin.venue.id+'\', \''+jsonObj.response.checkin.venue.name+'\')';
-                             console.log(insertlocation)
+                              var insertlocation= 'INSERT INTO locationVisited VALUES('+null+', '+data.statuses[0].user.id+',\''+jsonObj.response.checkin.venue.id+'\', \''+jsonObj.response.checkin.venue.name+'\')';
+                              console.log(insertlocation)
                       
                              connection.query(insertlocation);
                              querylocation.on('error', function(err) {
@@ -126,8 +124,6 @@ function getPlaceCheckin(username,days,oAuthTkn){
                      console.log(row);
              });
              //connection.end();
-
-
                       }
                        else 
                             console.log('error: ' + response.statusCode + ' response: ' + JSON.parse(response.body).meta.errorDetail);
@@ -137,9 +133,6 @@ function getPlaceCheckin(username,days,oAuthTkn){
                 }
           
         } 
-
-
-
         // console.log(data.statuses[0].user.id)
         // console.log(data.statuses[0].user.name)
         // console.log(data.statuses[0].user.location)
@@ -159,8 +152,6 @@ function getPlaceCheckin(username,days,oAuthTkn){
                     console.log(row);
             });
             connection.end();
-
-
 });
 }
 getPlaceCheckin('nepenthes9','7',accessToken)
