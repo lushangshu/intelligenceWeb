@@ -228,8 +228,6 @@ function clkTest(query, keywords, days){
 
                 console.log(finalTotal); 
 
-                res.writeHead(200, { "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*'});
-                res.end(html);
             }
         }
     }     
