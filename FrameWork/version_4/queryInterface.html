@@ -1,0 +1,247 @@
+<!-- code created by Shangshu Lu -->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- Mobile Specific Metas–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- FONT–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <!-- CSS–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+    <title>Query Interface</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+<body class= "code-snippets-visible" data-twttr-rendered="true">
+  <div class = "container">
+  <section class = "header">
+  <br><br><br>
+<h1 class="title" align="center"> Query Interface</h1>
+<div align="center">
+<a class="button button-primary" onclick="" > Searching History </a>
+</div>
+
+<h5>Tracking discussions</h5>
+<form id="myForm" onsubmit="return false;" >
+    Tracking  discussions  :
+    <input type="text" name="topic" value="">
+    <br>
+    coordinate(optional):<input type="text" name="coordinates" value=""><br>
+    <button id="sendButton">Query</button>
+    <br>
+  </form>
+  <h5>Query about specific users:</h5>
+<div class="value-props row">
+  <div class = "four columns value-prop">
+    <form id="myForm1" onsubmit="return false;" >
+    What specific users discuss about: <br>
+    Screen names:<input type="text" name="query_1" value=""><br>
+    How many keywords:<input type="text" name="query_2" value=""><br>
+    Number of days:<input type="text" name="query_3" value="">
+    <br>
+    <button id="sendButton1">Query</button>
+    <br><br>
+  </form>
+  </div>
+  <div class = "four columns value-prop">
+    <form id="myForm2" onsubmit="return false;" >
+    What points of interest (venues) a specific user has visited in the last X days  <br><br>
+    User:<br><input type="text" name="user_id" value=""><br>
+    Number of days:<br><input type="text" name="days" value="">
+    <br>
+    <button id="sendButton2">Query</button>
+    <br><br>
+
+  </form>
+  </div>
+  <div class = "four columns value-prop">
+    <form id="myForm3" onsubmit="return false;" >
+   Who is visiting venues in a specific geographic area (or visiting a named venue) or have done so in the last X days<br>
+    Location:<br><input type="text" name="c_location" value=""><br>
+    How many days:<input type="text" name="c_days" value="">
+    <br>
+    <button id="sendButton3">Query</button>
+</form>
+  </div>
+</section>
+<!-- 不同表格的name对应的就是body.后面的属性的名称 方便调用 -->
+
+<br><h4>
+Below is the search Result:
+<h4><br>
+<div id="myDiv">Here's the result</div>
+<div id="myDiv1"></div><div id="myDiv2"></div><div id="myDiv3"></div><div id="myDiv4"></div><div id="myDiv5"></div>
+<div id="myDiv6"></div><div id="myDiv7"></div><div id="myDiv8"></div><div id="myDiv9"></div><div id="myDiv10"></div>
+<div id="myDiv11"></div><div id="myDiv12"></div><div id="myDiv13"></div><div id="myDiv14"></div><div id="myDiv15"></div>
+<div id="myDiv16"></div><div id="myDiv17"></div><div id="myDiv18"></div><div id="myDiv19"></div><div id="myDiv20"></div>
+<!--<button type="button" onclick="myFunction()">通过 AJAX 改变内容</button>-->
+
+<script>
+
+    function sendAjaxQuery(url, data) {
+            $.ajax({
+                    url: url,
+                    data: data,
+                    dataType:'json',
+                    type: 'POST',
+//                    timeout: 10000,
+                    success: function (dataR) {
+                        var ret = JSON.stringify(dataR);
+                        alert('Success: '+ ret);
+                        LSSmyFunction(5,ret);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error: ' + error.message);
+                    }
+                });
+
+        }
+      //自定义数据传送函数 方便数据解析和回传
+      function LSSsend2cAjaxQuery(url,data){
+        $.ajax({
+            url:url,
+            data:data,
+            dataType:'json',
+            type:'POST',
+            success: function(dataR){
+              var ret = JSON.stringify(dataR);
+              alert('success: ' + ret);
+              var result = JSON.parse(ret);
+              for(ver indx=1;indx<ret.length;indx++)
+              {
+                LSSmyFunction(indx,ret[indx]);
+              }
+            },
+            error:function(xhr,status,error){
+              alert('Error: ' + error.message);
+            }
+        });
+      }
+      function LsssendTwitterTopicAjaxQuery(url,data){
+        $.ajax({
+            url:url,
+            data:data,
+            dataType:'json',
+            type:'POST',
+            success: function(dataR){
+              var ret = JSON.stringify(dataR);
+              //alert('success: ' + ret);
+              var result = JSON.parse(ret);
+              //alert('hot topic result success' + result.statuses);
+              var arrayResult = new Array(100);
+              var i = 1;
+              for (var indx in result.statuses) {
+                    var tweet = result.statuses[indx];
+                    var message = ' -  Date: '+tweet.created_at+' from:  '+tweet.user.screen_name+' ：'+tweet.text;
+                    arrayResult.push(message);
+                    LSSmyFunction(i,message);
+                    i = i+1;
+                  }
+              alert('result'+arrayResult);
+              //LSSmyFunction(arrayResult);
+            },
+            error:function(xhr,status,error){
+              alert('Error: ' + error.message);
+            }
+        });
+      }
+      
+
+      $.fn.serializeObject = function () {
+          var o = {};
+          var a = this.serializeArray();
+          $.each(a, function () {
+              if (o[this.name] !== undefined) {
+                  if (!o[this.name].push) {
+                      o[this.name] = [o[this.name]];
+                  }
+                  o[this.name].push(this.value || '');
+              } else {
+                  o[this.name] = this.value || '';
+              }
+          });
+          return o;
+      };
+
+      function sendData() {
+          LSSClearOldResult();
+          var form= document.getElementById('myForm');
+          //sendAjaxQuery('http://localhost:3001/postFile.html', JSON.stringify($('form').serializeObject()));
+          LsssendTwitterTopicAjaxQuery('http://localhost:3001/postFile.html', JSON.stringify($('form').serializeObject()));
+      }
+      function sendData1() {
+          LSSClearOldResult();
+          var form = document.getElementById('myForm1');
+           sendAjaxQuery('http://localhost:3001/postFile1.html', JSON.stringify($('form').serializeObject()));
+       }
+      
+       function sendData2() {
+          LSSClearOldResult();
+          var form = document.getElementById('myForm2');
+          sendAjaxQuery('http://localhost:3001/postFile2.html',JSON.stringify($('form').serializeObject()));
+
+       }
+       function sendData3() {
+           LSSClearOldResult();
+           var form = document.getElementById('myForm3');
+           //sendAjaxQuery('http://localhost:3001/postFile3.html', JSON.stringify($('form').serializeObject()));
+           //LsssendTwitterTopicAjaxQuery('http://localhost:3001/postFile3.html', JSON.stringify($('form').serializeObject()));
+           LSSsend2cAjaxQuery('http://localhost:3001/postFile3.html', JSON.stringify($('form').serializeObject()));
+       }
+
+       function loadXMLDoc(url,cfunc)
+       {
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange=cfunc;
+        xmlhttp.open("GET",url,true);
+        xmlhttp.send();
+       }
+      function LSSClearOldResult()
+      {
+        var num=1;
+        for (num;num<21;num++)
+        {
+          var divNu='myDiv'+num;
+          document.getElementById(divNu).innerHTML = '';
+        }
+      }
+      function LSSmyFunction(num,result)
+      {
+        var divNu = 'myDiv'+num;
+        alert(divNu);
+        document.getElementById(divNu).innerHTML = result;
+      }
+      
+      //part 1 --- 第一题的twitter请求
+      var sendButton = document.getElementById('sendButton');
+      sendButton.onclick = sendData;
+      //sendButton.onclick = myFunction;
+
+      //part 2-a --- 第二题的第一个问题
+      var sendButton1 = document.getElementById('sendButton1');
+      sendButton1.onclick = sendData1;
+      //sendButton1.onclick = myFunction;
+      
+      //part 2-b --- 第二题的第二个问题
+      var sendButton2 = document.getElementById('sendButton2');
+       sendButton2.onclick = sendData2;
+
+      //part 2-c --- 第二题的第二个问题
+      var sendButton3 = document.getElementById('sendButton3');
+      sendButton3.onclick = sendData3;
+
+</script>
+
+
+</body>
+</html>
