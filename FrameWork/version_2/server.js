@@ -42,9 +42,9 @@ var connection = mysql.createConnection(
     {
       host     : 'stusql.dcs.shef.ac.uk',
       port     : '3306',
-      user     : 'acp14sl',
-      password : 'a10b822e',
-      database : 'acp14sl'
+      user     : 'team075',
+      password : '62335627',
+      database : 'team075'
     }
 );
 
