@@ -38,16 +38,7 @@ var headers = {
 }
 
 //Mysql config information
-var mysql = require('mysql');
-var connection = mysql.createConnection(
-    {
-      host     : 'stusql.dcs.shef.ac.uk',
-      port     : '3306',
-      user     : 'team075',
-      password : '62335627',
-      database : 'team075'
-    }
-);
+
 
 //
 function addslashes( str ) {
@@ -123,10 +114,7 @@ var app = protocol.createServer(function (req, res) {
 
     //第二题的a ---->
     else  if ((req.method == 'POST') && (pathname == '/postFile1.html')){
-        var pathname = url.parse(req.url).pathname;
-        var body = '';
         var dataFin = {ok: 'ok'};
-       var dataFin = {ok: 'ok'};
         req.on('data', function (data) {
             body += data;
         });
@@ -234,6 +222,173 @@ var app = protocol.createServer(function (req, res) {
                     }
                 });
     }
+
+function clkTest(query, keywords, days){
+    var name = ['alex','tom'];
+    var wordSum = [];
+    var textTotal = "";
+    var nameCount = 0;
+    var kwNum = 2;
+    var day = 5;
+    if(query&&name.length<=10)name = query.split(",");
+    if(keywords)kwNum=keywords;
+    if(days)day=days;
+
+    var wordcountTotal = new Array(new Array(),new Array());
+    var finalTotal = [];
+
+//time setting
+    var currentDate = new Date();
+    var aimDate = new Date();
+    aimDate.setDate(currentDate.getDate()-day);
+    var year = aimDate.getUTCFullYear().toString();
+    var month = (aimDate.getUTCMonth()+1).toString();
+    var date = aimDate.getUTCDate().toString();
+    var sinceDate = year + '-' + month + '-' + date;
+
+
+    for(p=0;p<name.length;p++){
+//            console.log(p+'a');
+            client.get('search/tweets', {from: name[p], since: sinceDate}, callbackCount(p));
+    }
+
+    function callbackCount(p){
+        return function (err, data, response){
+                
+        var postData = "";
+
+                for (var indx in data.statuses) {
+                    var tweet = data.statuses[indx];
+                    //single tweet
+                    postData += (tweet.text+" ");
+ //                   console.log(tweet.text);
+
+                    res.writeHead(200, { "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*'});
+                    res.end(JSON.stringify(data));
+
+                 }
+
+/* we can set a stoplist to token the tweets at this line for more precise results  */
+                postData = postData.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`'"@~()·\|]/g,"");
+                postData = postData.replace(/(\r\n|\r|\n|  )/g," ");
+
+
+                 //total tweet
+                textTotal += postData;
+                wordData = postData.split(" ");
+//               console.log(JSON.stringify(textTotal));
+//                console.log(textTotal);
+
+                //each name's keyword
+                //wordcount required init length
+                var wordcount = new Array(new Array(),new Array());
+                    for(i=0; i<wordData.length;i++){
+                           // wordcount[i] = [];
+                        for(var n=0; n<wordcount.length;n++){
+                           // console.log(n);
+                           // console.log(wordcount[0][0]);
+                            if((n==(wordcount.length-1))&&((wordcount[n][0])!=wordData[i])){
+                            //console.log(n);
+                                wordcount[wordcount.length]=[wordData[i],1];
+                               // console.log(wordcount[n]);
+                           }
+                            else if((n!=(wordcount.length-1))&&((wordcount[n][0])==wordData[i]))
+                                {wordcount[n][1]++;
+                                break;}
+                            else
+                                continue;
+                        }
+                    }
+
+//loop counting
+                wordSum[nameCount] = wordcount;
+                nameCount++;
+
+//endings
+            if(wordSum.length==name.length){
+                                    //总的keyword
+                    textTotal = textTotal.replace(/(\r\n|\r|\n|  )/g," ");
+                    wordTotal = textTotal.split(" ");
+                        for(i=0; i<wordTotal.length;i++){
+                           // wordcount[i] = [];
+                            for(var n=0; n<wordcountTotal.length;n++){
+                           // console.log(n);
+                           // console.log(wordcount[0][0]);
+                                if((n==(wordcountTotal.length-1))&&((wordcountTotal[n][0])!=wordTotal[i])){
+                            //console.log(n);
+                                    wordcountTotal[wordcountTotal.length]=[wordTotal[i],1];
+                               // console.log(wordcount[n]);
+                                }
+                                else if((n!=(wordcountTotal.length-1))&&((wordcountTotal[n][0])==wordTotal[i]))
+                                    {wordcountTotal[n][1]++;
+                                    break;
+                                }
+                                else
+                                    continue;
+                            }
+                        }
+
+//sorting
+                    var sortKW = new Array(new Array(),new Array());
+
+
+                    for(i=0;i<kwNum;i++){
+
+                        sortKW[i]=['',0];
+                    }
+ //               console.log(wordcountTotal.length);
+
+//results of sorting
+                        for(i=0;i<wordcountTotal.length;i++){
+                            if ((wordcountTotal[i][1])>(sortKW[kwNum-1][1])){
+                                sortKW[kwNum-1] = wordcountTotal[i];
+
+                                    for(n=0;n<kwNum;n++){
+                                        for(m=0;m<n;m++){
+                                            if ((sortKW[m][1])<(sortKW[n][1])){
+                                                var k = sortKW[n];
+                                                sortKW[n] = sortKW[m];
+                                                sortKW[m] = k;
+                                            }
+                                            else
+                                                continue;
+                                        }
+                                    }
+                            }
+                    
+                            else
+                                continue;
+
+                }
+
+//                    console.log(sortKW);
+
+                for(i=0;i<name.length;i++){
+                    for(m=0;m<sortKW.length;m++){
+                        for(n=0;n<wordSum[i].length;n++)
+                            if(((wordSum[i])[n][0])==sortKW[m][0]){
+                                //console.log(finalTotal[i][0]);
+                                finalTotal.push([name[i],(wordSum[i])[n]]);
+                                break;
+                            }
+
+                            else if((n==wordSum[i].length-1)&&((wordSum[i])[n][0])!=sortKW[m][0])
+                                finalTotal.push([name[i],[sortKW[m][0],0]]);
+
+                    }
+                }
+
+                for(i=0;i<kwNum;i++){
+                    finalTotal.push(['total',sortKW[i]]);
+                }
+
+                console.log(finalTotal); 
+
+            }
+        }
+    }     
+}
+
 }).listen(portNo);
         
 //other functions----Pengyuan Zhao
@@ -415,169 +570,7 @@ function LSSHandleDays(days)
 }
 
 //other functions----Likang Cao
-function clkTest(query, keywords, days){
-    var name = ['alex','tom'];
-    var wordSum = [];
-    var textTotal = "";
-    var nameCount = 0;
-    var kwNum = 2;
-    var day = 5;
-    if(query&&name.length<=10)name = query.split(",");
-    if(keywords)kwNum=keywords;
-    if(days)day=days;
 
-    var wordcountTotal = new Array(new Array(),new Array());
-    var finalTotal = [];
-
-//time setting
-    var currentDate = new Date();
-    var aimDate = new Date();
-    aimDate.setDate(currentDate.getDate()-day);
-    var year = aimDate.getUTCFullYear().toString();
-    var month = (aimDate.getUTCMonth()+1).toString();
-    var date = aimDate.getUTCDate().toString();
-    var sinceDate = year + '-' + month + '-' + date;
-
-
-    for(p=0;p<name.length;p++){
-//            console.log(p+'a');
-            client.get('search/tweets', {from: name[p], since: sinceDate}, callbackCount(p));
-    }
-
-    function callbackCount(p){
-        return function (err, data, response){
-                
-        var postData = "";
-
-                for (var indx in data.statuses) {
-                    var tweet = data.statuses[indx];
-                    //single tweet
-                    postData += (tweet.text+" ");
- //                   console.log(tweet.text);
-
-                    res.writeHead(200, { "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*'});
-                    res.end(JSON.stringify(data));
-
-                 }
-
-/* we can set a stoplist to token the tweets at this line for more precise results  */
-                postData = postData.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`'"@~()·\|]/g,"");
-                postData = postData.replace(/(\r\n|\r|\n|  )/g," ");
-
-
-                 //total tweet
-                textTotal += postData;
-                wordData = postData.split(" ");
-//               console.log(JSON.stringify(textTotal));
-//                console.log(textTotal);
-
-                //each name's keyword
-                //wordcount required init length
-                var wordcount = new Array(new Array(),new Array());
-                    for(i=0; i<wordData.length;i++){
-                           // wordcount[i] = [];
-                        for(var n=0; n<wordcount.length;n++){
-                           // console.log(n);
-                           // console.log(wordcount[0][0]);
-                            if((n==(wordcount.length-1))&&((wordcount[n][0])!=wordData[i])){
-                            //console.log(n);
-                                wordcount[wordcount.length]=[wordData[i],1];
-                               // console.log(wordcount[n]);
-                           }
-                            else if((n!=(wordcount.length-1))&&((wordcount[n][0])==wordData[i]))
-                                {wordcount[n][1]++;
-                                break;}
-                            else
-                                continue;
-                        }
-                    }
-
-//loop counting
-                wordSum[nameCount] = wordcount;
-                nameCount++;
-
-//endings
-                if(wordSum.length==name.length){
-                                    //总的keyword
-                    textTotal = textTotal.replace(/(\r\n|\r|\n|  )/g," ");
-                    wordTotal = textTotal.split(" ");
-                        for(i=0; i<wordTotal.length;i++){
-                           // wordcount[i] = [];
-                            for(var n=0; n<wordcountTotal.length;n++){
-                           // console.log(n);
-                           // console.log(wordcount[0][0]);
-                                if((n==(wordcountTotal.length-1))&&((wordcountTotal[n][0])!=wordTotal[i])){
-                            //console.log(n);
-                                    wordcountTotal[wordcountTotal.length]=[wordTotal[i],1];
-                               // console.log(wordcount[n]);
-                                }
-                                else if((n!=(wordcountTotal.length-1))&&((wordcountTotal[n][0])==wordTotal[i]))
-                                    {wordcountTotal[n][1]++;
-                                    break;
-                                }
-                                else
-                                    continue;
-                            }
-                        }
-
-//sorting
-                    var sortKW = new Array(new Array(),new Array());
-
-
-                    for(i=0;i<kwNum;i++){
-
-                        sortKW[i]=['',0];
-                    }
- //               console.log(wordcountTotal.length);
-
-//results of sorting
-                        for(i=0;i<wordcountTotal.length;i++){
-                            if ((wordcountTotal[i][1])>(sortKW[kwNum-1][1])){
-                                sortKW[kwNum-1] = wordcountTotal[i];
-
-                                    for(n=0;n<kwNum;n++){
-                                        for(m=0;m<n;m++){
-                                            if ((sortKW[m][1])<(sortKW[n][1])){
-                                                var k = sortKW[n];
-                                                sortKW[n] = sortKW[m];
-                                                sortKW[m] = k;
-                                            }
-                                            else
-                                                continue;
-                                        }
-                                    }
-                            }
-                    
-                            else
-                                continue;
-
-                }
-
-//                    console.log(sortKW);
-
-                for(i=0;i<name.length;i++){
-                    for(m=0;m<sortKW.length;m++){
-                        for(n=0;n<wordSum[i].length;n++)
-                            if(((wordSum[i])[n][0])==sortKW[m][0]){
-                                //console.log(finalTotal[i][0]);
-                                finalTotal.push([name[i],(wordSum[i])[n]]);
-                                break;
-                            }
-
-                            else if((n==wordSum[i].length-1)&&((wordSum[i])[n][0])!=sortKW[m][0])
-                                finalTotal.push([name[i],[sortKW[m][0],0]]);
-
-                    }
-                }
-
-                for(i=0;i<kwNum;i++){
-                }
-
-                console.log(finalTotal); 
-            }
-        }
-    }     
-}
 
 function CLKanyFunction_2()
 {
