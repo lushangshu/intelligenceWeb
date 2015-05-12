@@ -66,7 +66,7 @@ function waitCallBack(param1, callback) {
 
 //dotabase code ---->
 
-//initialize the connectiong of database -- lab code
+//initialize the connection of database -- lab code
 function setUpAndConnectMySQL()
 {
     connection.connect();
