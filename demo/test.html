@@ -2,201 +2,54 @@
 <html>   
 
 <head>   
-
 <meta content="text/html; charset=UTF-8;"/>   
-
-<style type="text/css">   
-
- 
-
-/*------------tab----------*/   
-
-.tabItemContainer{   
-
-height:30px;   
-
-overflow:hidden;   
-
-background:#F7F7F7 url(dot.gif) bottom repeat-x;   
-
-margin-bottom:6px;   
-
-}   
-
-.tabItemContainer .tab,   
-
-.tabItemContainer .blank{   
-
-float:left;   
-
-height:24px;   
-
-line-height:24px;   
-
-margin:0;   
-
-margin-right:6px;   
-
-margin-top:6px;   
-
-overflow:hidden;   
-
-cursor:pointer;   
-
-}   
-
-.tabItemContainer .blank{   
-
-width:48px;   
-
-}   
-
-.tabItemContainer .tab div{   
-
-float:left;   
-
-height:24px;   
-
-}   
-
-.tabItemContainer .selected{   
-
- 
-
-}   
-
-.tabItemContainer .tab_left,   
-
-.tabItemContainer .selected .tab_left{   
-
-background:url(tab_on_left.gif) no-repeat bottom right;   
-
-width:5px;   
-
-}   
-
-.tabItemContainer .tab_middle,   
-
-.tabItemContainer .selected .tab_middle{   
-
-padding:0 16px;   
-
-}   
-
-.tabItemContainer .selected .tab_middle{   
-
-background:url(tab_on_center.gif) repeat-x bottom;s   
-
-padding:0 16px;   
-
-}   
-
-.tabItemContainer .tab_right,   
-
-.tabItemContainer .selected .tab_right{   
-
-background:url(tab_on_right.gif) no-repeat bottom left;   
-
-width:5px;   
-
-}   
-
-.tabItemContainer .tab_left{   
-
-background:url(tab_off_left.gif) no-repeat bottom right;   
-
-}   
-
-.tabItemContainer .tab_middle{   
-
-background:url(tab_off_center.gif) repeat-x bottom right;   
-
-}   
-
-.tabItemContainer .tab_right{   
-
-background:url(tab_off_right.gif) no-repeat bottom left;   
-
-}   
-
-.tabItemContainer .tab_4{   
-
-background:url(tab_off_right.gif) no-repeat bottom left;   
-
-}   
-
-/*------------tab end----------*/   
-
-</style>   
-
-<script type="text/javascript">   
-
-//æ”¹å˜tabæ ·å¼ï¼Œ  
+<link rel="stylesheet" href="css/normalize.css">
+<style>
+      #map-canvas {
+        width: 500px;
+        height: 400px;
+      }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script type="text/javascript"> 
 
 function changeTab(tabIndex){   
+	var tabIndexVal = parseInt(tabIndex);   
+	for(var i=1;i<=4;i++){  
+		if(tabIndexVal==i){   
+			document.getElementById('tab'+i).className="tab selected";   
+			document.getElementById('d'+i).style.display="block";   
+		}else{   
+			document.getElementById('tab'+i).className="tab";   
+			document.getElementById('d'+i).style.display="none";   
+		}   
 
-var tabIndexVal = parseInt(tabIndex);   
+	}   
+	}   
 
-//var tabCount=jQuery('#tabCount').val();   
-
-for(var i=1;i<=4;i++){   
-
-//æ”¹å˜é€‰é¡¹å¡æ ·å¼     
-
-if(tabIndexVal==i){   
-
-document.getElementById('tab'+i).className="tab selected";   
-
- 
-
-document.getElementById('d'+i).style.display="block";   
-
-//jQuery('#tab'+i).removeClass("tab");   
-
-//jQuery('#tab'+i).addClass("tab selected");   
-
-}else{   
-
-document.getElementById('tab'+i).className="tab";   
-
- 
-
-document.getElementById('d'+i).style.display="none";   
-
-//jQuery('#tab'+i).removeClass("tab selected");   
-
-//jQuery('#tab'+i).addClass("tab");   
-
-}   
-
-}   
-
- 
-
-//submit2Times(tabKey);   
-
-}   
-
+function initialize() {
+        var mapCanvas = document.getElementById('map-canvas');
+        var mapOptions = {
+          center: new google.maps.LatLng(53.38, -1.4663),
+          zoom: 13,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions)
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
 </script>    
 
 </head>   
-
- 
-
 <body>  
 
 <br><br>
-
   <h1 class="title" align="center"> Query Interface</h1>
   <br><br>
  
 
-<div class="tabItemContainer">   
-  
-  <div id="tab1" class="tab selected">   
-
+<div class="tabItemContainer">    
+<div id="tab1" class="tab selected">   
 <div class="tab_left"></div>   
-
 <div class="tab_middle">   
 
 <a  href="javascript:changeTab(1);">   
@@ -204,7 +57,6 @@ document.getElementById('d'+i).style.display="none";
 Tracking discussuins
 
 </a>   
-
 </div>   
 
 <div class="tab_right"></div>   
@@ -213,8 +65,6 @@ Tracking discussuins
 
 <input id="first" type="hidden" value="asdf"/>  
 
-
-
 <div id="tab2" class="tab">   
 
 <div class="tab_left"></div>   
@@ -222,9 +72,7 @@ Tracking discussuins
 <div class="tab_middle">   
 
 <a href="javascript:changeTab(2);">   
-
-Specific topic
-
+Find People
 </a>   
 
 </div>   
@@ -279,13 +127,6 @@ Find people
 
 <input id="forth" type="hidden" value="asdf"/>      
 
-
- 
-
- 
-
- 
-
 </div>      
 
 <div id="d1" style="float:left;width:100%; height:500px; background-color:#6495ED">   
@@ -294,19 +135,19 @@ first
 
 </div>   
 
- 
-
 <div id="d2"  style="display:none; float:left;width:100%; height:500px; background-color:#6495ED">   
 
 second   
 
 </div>   
 
- 
 
 <div id="d3"  style="display:none; float:left;width:100%; height:500px; background-color:#6495ED">   
 
-third   
+	<h1>third</h1>
+
+<div id="map-canvas" align="center"></div>
+
 
 </div>  
 

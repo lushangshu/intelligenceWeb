@@ -425,3 +425,118 @@ td,
 th {
   padding: 0;
 }
+
+/* code from Framework*/
+.tabItemContainer{   
+
+height:30px;   
+
+overflow:hidden;   
+
+background:#F7F7F7 url(dot.gif) bottom repeat-x;   
+
+margin-bottom:6px;   
+
+}   
+
+.tabItemContainer .tab,   
+
+.tabItemContainer .blank{   
+
+float:left;   
+
+height:24px;   
+
+line-height:24px;   
+
+margin:0;   
+
+margin-right:6px;   
+
+margin-top:6px;   
+
+overflow:hidden;   
+
+cursor:pointer;   
+
+}   
+
+.tabItemContainer .blank{   
+
+width:48px;   
+
+}   
+
+.tabItemContainer .tab div{   
+
+float:left;   
+
+height:24px;   
+
+}   
+
+.tabItemContainer .selected{   
+
+ 
+
+}   
+
+.tabItemContainer .tab_left,   
+
+.tabItemContainer .selected .tab_left{   
+
+background:url(tab_on_left.gif) no-repeat bottom right;   
+
+width:5px;   
+
+}   
+
+.tabItemContainer .tab_middle,   
+
+.tabItemContainer .selected .tab_middle{   
+
+padding:0 16px;   
+
+}   
+
+.tabItemContainer .selected .tab_middle{   
+
+background:url(tab_on_center.gif) repeat-x bottom;s   
+
+padding:0 16px;   
+
+}   
+
+.tabItemContainer .tab_right,   
+
+.tabItemContainer .selected .tab_right{   
+
+background:url(tab_on_right.gif) no-repeat bottom left;   
+
+width:5px;   
+
+}   
+
+.tabItemContainer .tab_left{   
+
+background:url(tab_off_left.gif) no-repeat bottom right;   
+
+}   
+
+.tabItemContainer .tab_middle{   
+
+background:url(tab_off_center.gif) repeat-x bottom right;   
+
+}   
+
+.tabItemContainer .tab_right{   
+
+background:url(tab_off_right.gif) no-repeat bottom left;   
+
+}   
+
+.tabItemContainer .tab_4{   
+
+background:url(tab_off_right.gif) no-repeat bottom left;   
+
+} 
