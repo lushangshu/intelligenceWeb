@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="description" content="">
+  	<meta name="author" content="">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  	<link rel="stylesheet" href="/stylesheets/normalize.css">
+  	<link rel="stylesheet" href="/stylesheets/skeleton.css">
+  	<link rel="stylesheet" href="/stylesheets/style.css">
+  	<script data-require="jquery@2.1.1" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/bin/traceur.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/src/bootstrap.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bluebird/1.2.2/bluebird.min.js"></script>
+    <title>Query Interface</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+<script>
+	function sendAjaxQuery(url, data) {
+            $.ajax({
+                    url: url,
+                    data: data,
+                    dataType:'json',
+                    type: 'POST',
+                    success: function (dataR) {
+                        var ret = JSON.stringify(dataR);
+                        alert('Success: '+ ret);
+                        console.log(ret);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error: ' + error.message);
+                    }
+                });
+
+        }
+    $.fn.serializeObject = function () {
+          var o = {};
+          var a = this.serializeArray();
+          $.each(a, function () {
+              if (o[this.name] !== undefined) {
+                  if (!o[this.name].push) {
+                      o[this.name] = [o[this.name]];
+                  }
+                  o[this.name].push(this.value || '');
+              } else {
+                  o[this.name] = this.value || '';
+              }
+          });
+          return o;
+      };
+</script>
+
+<body>
+	<h1> title </h1>
+	 <ul>
+	</ul> 
+	<form id="ques1" action="/1" method="post">
+		<input type ="text" name ="promise">
+		<input type ="submit" value="test">
+		<!-- <button id= "query">Query 1 </button>  -->
+	</form>
+
+	<form id="myForm" action="/2c" method="post" >
+    Tracking  discussions:
+    <input type="text" name="topic" value="">
+    <br>
+    coordinate(optional):
+    <input type="text" name="coordinates" value=""><br>
+    Count:
+    <input type="text" name="count" value="">
+    <input type="submit" value="Query">
+
+  	</form>
+  	<table>
+  	<tr><td>Date</td><td> User</td> <td> content</td><td>view</td></tr>
+  	<% for (var i=1;i<items.length;i++){ %>
+  	<tr><td><%= items[i].date %></td><td><%= items[i].author %></td><td><%= items[i].content %></td><td></td></tr>
+  	<%}%>
+  	</table>
+
+	<%= new Date() %>
+</body>
+<script>
+	function sendData() {
+          LSSClearOldResult();
+          var form= document.getElementById('ques1');
+          sendAjaxQuery('/promiseTest', JSON.stringify($('form').serializeObject()));
+      }
+ 	var sendButton = document.getElementById('query');
+    sendButton.onclick = sendData;
+</script>
+
+</html>
