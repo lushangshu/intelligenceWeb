@@ -1,0 +1,354 @@
+<!-- code created by Likang Cao --><!DOCTYPE html>
+<html>
+ <head lang="en"> 
+  <meta charset="UTF-8" /> 
+  <meta name="description" content="" /> 
+  <meta name="author" content="" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+  <title>Query Interface</title> 
+  <link rel="stylesheet" href="/stylesheets/normalize.css" /> 
+  <link rel="stylesheet" href="/stylesheets/skeleton.css" /> 
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="/stylesheets/ihwy2015.css" type="text/css" media="screen" charset="utf-8" /> 
+  <style type="text/css" media="screen" charset="utf-8">
+		body {
+	background:none;
+	margin-top:0;
+}
+		.demoWrapper { margin:15px;}
+		pre.chili { margin-bottom:2em; }
+		
+	</style> 
+  <script language="JavaScript" type="text/javascript" src="/javascripts/jquery.min.js"></script> 
+  <script language="JavaScript" type="text/javascript" src="/javascripts/jquery.idTabs.min.js"></script> 
+  <script type="text/javascript" charset="utf-8">
+		$(function(){
+			if(top.location.href.toLowerCase() == self.location.href.toLowerCase()) $('#docLink').show();
+
+			$("#tabNav ul").idTabs("tab1"); 
+		
+			$('#demoOne').listnav();
+
+			$('.demoTwo').listnav({
+				includeAll:false,
+				noMatchText:'There are no matching entries.'
+			});
+		
+			$('#demoThree').listnav({
+				initLetter:'c'
+			});
+		
+			$('#demoFour').listnav({
+				includeNums: false
+			});
+		
+			$('#demoFive').listnav({
+				cookieName: 'ln-demo5',
+				onClick: function(letter){
+					alert('You clicked ' + ((letter == '_') ? '0-9' : letter.toUpperCase()) );
+				}
+			});
+		
+			$('.demo a').click(function(){
+				alert('Links in this demo don\'t actually go anywhere');
+				return false;
+			});
+
+			$('#demoSix').listnav({
+				includeOther: true,
+				prefixes: ['the','a']
+			});
+		});
+	</script> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ </head> 
+ 
+ <body class="code-snippets-visible" data-twttr-rendered="true"> 
+  <div class="container"> 
+    <div class="demoWrapper"> 
+     <div id="tabNav"> 
+      <ul> 
+       <li><a href="#tab1">Demo 1</a></li> 
+       <li><a href="#tab2">Demo 2</a></li> 
+       <li><a href="#tab3">Demo 3</a></li> 
+       <li><a href="#tab4">Demo 4</a></li> 
+      </ul> 
+      <div class="clr"></div> 
+     </div> 
+     <div align="center" style="background:#990000"> 
+      <h1 class="title" align="center"> <font color="#FFFFFF">Query Interface</font></h1>
+      <button id="sendButton4"> <font color="#FFFFFF">Searching History </font></button> 
+     </div> 
+     <br /> 
+     <div id="tabs" > 
+      <div id="tab1"  class="tab"> 
+       <div class="header" > 
+        <h5>Tracking discussions</h5><br/>   
+        <form id="ques1" action="/1" method="post">
+          <input type ="text" name ="promise">
+          <input type ="submit" value="test">
+        </form>
+
+        
+
+        <br />   
+        <hr /> 
+        <h4> Below is the search Result: </h4> 
+        <div class="right_float">
+        demo1 description
+       </div>
+         <table>
+            <thead>
+            <tr><th>Date</th><th> User</td> <th> content</th><th>view</th></tr>
+            </thead>
+            <tbody>
+            <% for (var i=1;i<items.length;i++){ %>
+            <tr><td><%= items[i].date %></td><td><%= items[i].author %></td><td><%= items[i].content %></td><td><a href='/Retweets/<%=items[i].id %>'>check retweeters</a></td></tr>
+            <%}%>
+            </tbody>
+         </table>
+        <div id="table-scroll">
+          <table>
+          <thead>
+          <tr><th>img</th><th>user name</th></tr>
+          </thead>
+          <tbody>
+          <% for (var i=1;i<users.length;i++){ %>
+          <tr><td><img src='<%=users[i].profile %>'></img></td><td><%= users[i].name %></td></tr>
+          <%}%>
+          </tbody>
+          </table>
+        </div>
+        <div align="center"> 
+        </div> 
+        
+       </div> 
+      </div> 
+      <div id="tab2" class="tab"> 
+       <section class="header"> 
+        <div class="value-props row"> 
+         <div class="four columns value-prop"> 
+          <form id="myForm1" onsubmit="return false;">
+            What specific users discuss about: 
+           <br /> Screen Name: 
+           <input type="text" name="sName" value="" /> 
+           <br /> How many Keywords: 
+           <input type="text" name="hKeywords" /> 
+           <br /> How many days: 
+           <input type="text" name="hDays" /> 
+           <br /> 
+           <br /> 
+           <button id="sendButton1">Query</button> 
+           <br /> 
+           <br /> 
+          </form> 
+         </div> 
+        </div> 
+       </section> 
+       <hr /> 
+       <h4> Below is the search Result: </h4> 
+       <div class="right_float" style="margin-top:-510px;width:200px; height:200px; margin-right:0px; float:right;  border:1px solid #CCCCCC;">
+        demo2 description
+       </div> 
+       <div align="center" class="bottom_float">
+        demo2 -1
+       </div> 
+       <div align="center" class="bottom_float">
+        demo2 -2
+       </div> 
+       <div align="center"> 
+       </div> 
+      </div> 
+      <div id="tab3" class="tab"> 
+       <section class="header"> 
+        <div class="value-props row"> 
+         <div class="four columns value-prop"> 
+          <form id="myForm2" onsubmit="return false;">
+            What points of interest (venues) a specific user has visited in the last X days 
+           <br /> 
+           <br /> User: 
+           <br /> 
+           <input type="text" name="user_id" value="" /> 
+           <br /> Number of days: 
+           <br /> 
+           <input type="text" name="days" value="" /> 
+           <br /> 
+           <button id="sendButton2">Query</button> 
+           <br /> 
+           <br /> 
+          </form> 
+         </div> 
+        </div> 
+       </section> 
+       <hr /> 
+       <h4> Below is the search Result: </h4> 
+       <div class="right_float">
+        demo3 description
+       </div> 
+       <div align="center" class="bottom_float">
+        demo3 -1
+       </div> 
+       <div align="center" class="bottom_float">
+        demo3 -2
+       </div> 
+       <div align="center"> 
+       </div> 
+      </div> 
+      <div id="tab4" class="tab"> 
+       <section class="header"> 
+        <div class="value-props row"> 
+         <div class="four columns value-prop"> 
+          <form id="myForm" action="/2c" method="post" >
+            Location:
+            <input type="text" name="location" value=""><br>Days:
+            <input type="text" name="days" value=""><br>
+            <input type="submit" value="Query">
+          </form>
+         </div> 
+        </div> 
+       </section> 
+       <hr /> 
+       <h4> Below is the search Result: </h4> 
+       <div class="right_float">
+        demo4 description
+       </div>
+       <div id="table-scroll">
+        <table>
+        <thead>
+        <tr><th>img</th><th>user name</th><th>tweeter name</th><th>location</th><th>profile</th><th>timeline</th></tr>
+        </thead>
+        <tbody>
+        <% for (var i=1;i<venueUsers.length;i++){ %>
+        <tr>
+          <td><img src='<%=venueUsers[i].profile %>'></img></td><td><%= venueUsers[i].name %></td>
+          <td><%= venueUsers[i].tweetName %></td><td><%= venueUsers[i].location %></td><td><%= venueUsers[i].description %></td><td><a href='/timeline/<%=venueUsers[i].tweetName %>'>timeline</td>
+        </tr>
+        <%}%>
+        </tbody>
+        </table>
+      </div>
+
+        <div id="table-scroll">
+        <table>
+          <thead>
+            <tr><th>date</th><th>text</th></tr>
+          </thead>
+          <tbody>
+            <% for (var i=1;i<tweetTimeline.length;i++){ %>
+          <tr>
+          <td><%=tweetTimeline[i].date %></td><td><%= tweetTimeline[i].text %></td>
+          </tr>
+          <%}%>
+          </tbody>
+        </table>
+      </div>
+       <div align="center"> 
+       </div> 
+      </div> 
+     </div> 
+    </div>
+   </form> 
+  </div>  
+  <!--<section class="header"> 
+   
+    
+    
+    <h5>Query about specific users:</h5> 
+    
+   </section> --> 
+  <!-- 不同表格的name对应的就是body.后面的属性的名称 方便调用 --> 
+  <div id="myDiv1"></div> 
+  <div id="myDiv2"></div> 
+  <div id="myDiv3"></div> 
+  <div id="myDiv4"></div> 
+  <!--<button type="button" onclick="myFunction()">通过 AJAX 改变内容</button>--> 
+  <script>
+
+    function sendAjaxQuery(url, data) {
+            $.ajax({
+                    url: url,
+                    data: data,
+                    dataType:'json',
+                    type: 'POST',
+//                    timeout: 10000,
+                    success: function (dataR) {
+                        var ret = JSON.stringify(dataR);
+                        alert('Success: '+ ret);
+                        LSSmyFunction(5,ret);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error: ' + error.message);
+                    }
+                });
+        }
+      $.fn.serializeObject = function () {
+          var o = {};
+          var a = this.serializeArray();
+          $.each(a, function () {
+              if (o[this.name] !== undefined) {
+                  if (!o[this.name].push) {
+                      o[this.name] = [o[this.name]];
+                  }
+                  o[this.name].push(this.value || '');
+              } else {
+                  o[this.name] = this.value || '';
+              }
+          });
+          return o;
+      };
+
+      function sendData() {
+          LSSClearOldResult();
+          var form= document.getElementById('myForm');
+          //sendAjaxQuery('http://localhost:3001/postFile.html', JSON.stringify($('form').serializeObject()));
+          LsssendTwitterTopicAjaxQuery('http://localhost:3001/postFile.html', JSON.stringify($('form').serializeObject()));
+      }
+       function LSSsearchHistory()
+       {
+          document.getElementById('myDiv2').innerHTML = '_________';
+       }
+
+       function loadXMLDoc(url,cfunc)
+       {
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange=cfunc;
+        xmlhttp.open("GET",url,true);
+        xmlhttp.send();
+       }
+      function LSSClearOldResult()
+      {
+        var num=1;
+        for (num;num<21;num++)
+        {
+          var divNu='myDiv'+num;
+          document.getElementById(divNu).innerHTML = '';
+        }
+      }
+      function LSSmyFunction(num,result)
+      {
+        var divNu = 'myDiv'+num;
+        //alert(divNu);
+        document.getElementById(divNu).innerHTML = result;
+      }
+
+      //part 2-a --- 第二题的第一个问题
+      var sendButton1 = document.getElementById('sendButton1');
+      sendButton1.onclick = sendData1;
+      //sendButton1.onclick = myFunction;
+      
+      //part 2-b --- 第二题的第二个问题
+      var sendButton2 = document.getElementById('sendButton2');
+       sendButton2.onclick = sendData2;
+
+      
+
+</script>    
+ </body>
+</html>
