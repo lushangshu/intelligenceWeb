@@ -19,9 +19,17 @@
 		pre.chili { margin-bottom:2em; }
 		
 	</style> 
+  <script data-require="jquery@2.1.1" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/bin/traceur.js"></script>
+  <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/src/bootstrap.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bluebird/1.2.2/bluebird.min.js"></script>
+  <title>Query Interface</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
   <script language="JavaScript" type="text/javascript" src="/javascripts/jquery.min.js"></script> 
   <script language="JavaScript" type="text/javascript" src="/javascripts/jquery.idTabs.min.js"></script> 
   <script type="text/javascript" charset="utf-8">
+
 		$(function(){
 			if(top.location.href.toLowerCase() == self.location.href.toLowerCase()) $('#docLink').show();
 
@@ -59,6 +67,7 @@
 				prefixes: ['the','a']
 			});
 		});
+
 	</script> 
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head> 
@@ -82,21 +91,21 @@
      <br /> 
      <div id="tabs" > 
       <div id="tab1"  class="tab"> 
-       <div class="header" > 
+       <div id="header" > 
         <h5>Tracking discussions</h5><br/>   
         <form id="ques1" action="/1" method="post">
           <input type ="text" name ="promise">
           <input type ="submit" value="test">
         </form>
-
-        
-
-        <br />   
-        <hr /> 
-        <h4> Below is the search Result: </h4> 
-        <div class="right_float">
-        demo1 description
+        <br /> 
+        </div>
+        <div id="nav">
+          <br><br>
+          demo1 description
        </div>
+        </div>
+        <div id="section">    
+        <div id="table-scroll">
          <table>
             <thead>
             <tr><th>Date</th><th> User</td> <th> content</th><th>view</th></tr>
@@ -107,6 +116,7 @@
             <%}%>
             </tbody>
          </table>
+       </div>
         <div id="table-scroll">
           <table>
           <thead>
@@ -209,9 +219,7 @@
        </section> 
        <hr /> 
        <h4> Below is the search Result: </h4> 
-       <div class="right_float">
-        demo4 description
-       </div>
+       <div id="googleMap" style="width:500px;height:380px;"></div>
        <div id="table-scroll">
         <table>
         <thead>
@@ -250,9 +258,6 @@
    </form> 
   </div>  
   <!--<section class="header"> 
-   
-    
-    
     <h5>Query about specific users:</h5> 
     
    </section> --> 
@@ -342,13 +347,31 @@
       var sendButton1 = document.getElementById('sendButton1');
       sendButton1.onclick = sendData1;
       //sendButton1.onclick = myFunction;
-      
-      //part 2-b --- 第二题的第二个问题
-      var sendButton2 = document.getElementById('sendButton2');
-       sendButton2.onclick = sendData2;
+</script> 
+<script>
+    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD2WW-Hc3rjv4fwXNlMadJkUvM8Gv5oE1U&sensor=false">
+</script>
+<script>
+  var myCenter=new google.maps.LatLng(51.508742,-0.120850);
 
-      
+  function initialize()
+  {
+  var mapProp = {
+    center:myCenter,
+    zoom:5,
+    mapTypeId:google.maps.MapTypeId.ROADMAP
+    };
 
-</script>    
+  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+  var marker=new google.maps.Marker({
+    position:myCenter,
+    });
+
+  marker.setMap(map);
+  }
+
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>   
  </body>
 </html>

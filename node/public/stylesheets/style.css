@@ -5,6 +5,33 @@
   box-sizing: border-box;
 }
 
+#header {
+    background-color:#576274;
+    color:black;
+    text-align:center;
+    padding:5px;
+}
+#nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:200px;
+    float:left;
+    padding:5px;        
+}
+#section {
+    width:600px;
+    float:left;
+    padding:5px;    
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+   padding:5px;    
+}
+
 body {
   background: #353a40;
 }
