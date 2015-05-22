@@ -1,0 +1,80 @@
+<!-- code created by Shangshu Lu -->
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- Mobile Specific Metas–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- FONT–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <!-- CSS–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+    <title>Query Interface</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+<body>
+
+
+<h5>Tracking discussions</h5>
+<form id="myForm" onsubmit="return false;" >
+    Tracking  discussions  :
+    <input type="text" name="topic" value="">
+    <br>
+    coordinate(optional):<input type="text" name="coordinates" value=""><br>
+    <button id="sendButton">Query</button>
+    <br>
+  </form>
+<script>
+
+    function sendAjaxQuery(url, data) {
+            $.ajax({
+                    url: url,
+                    data: data,
+                    dataType:'json',
+                    type: 'POST',
+//                    timeout: 10000,
+                    success: function (dataR) {
+                        var ret = JSON.stringify(dataR);
+                        alert('Success: '+ ret);
+                        LSSmyFunction(5,ret);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error: ' + error.message);
+                    }
+                });
+
+        }
+      $.fn.serializeObject = function () {
+          var o = {};
+          var a = this.serializeArray();
+          $.each(a, function () {
+              if (o[this.name] !== undefined) {
+                  if (!o[this.name].push) {
+                      o[this.name] = [o[this.name]];
+                  }
+                  o[this.name].push(this.value || '');
+              } else {
+                  o[this.name] = this.value || '';
+              }
+          });
+          return o;
+      };
+
+      function sendData() {
+
+          var form= document.getElementById('myForm');
+          //sendAjaxQuery('http://localhost:3001/postFile.html', JSON.stringify($('form').serializeObject()));
+          sendAjaxQuery('http://localhost:3001', JSON.stringify($('form').serializeObject()));
+      }
+      var sendButton = document.getElementById('sendButton');
+      sendButton.onclick = sendData;
+
+</script>
+
+
+</body>
+</html>
