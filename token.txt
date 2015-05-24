@@ -1,0 +1,3 @@
+"has","have","had","my","like","let","little","just","keep","less","more","big",
+                    "going","go","gone","get","sometime","most","ever","must","much","once","up","down","see",
+                    "saw","take","tell","will","about","just","ok","say","shall","still","that","well","last","thought"
