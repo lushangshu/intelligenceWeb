@@ -1,1 +1,0 @@
-according to the requirement of 1.2a queries about specific users, the keywords must common to all users. Because there are a stoplist to token meanless words such as prepositions or conjunctions, there might be no data response oftenly. For testing this implement, you can empty the stoplist array in aQuery.
