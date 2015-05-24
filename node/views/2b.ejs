@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/stylesheets/normalize.css">
+    <!-- <link rel="stylesheet" href="/stylesheets/skeleton.css"> -->
+    <!-- <link rel="stylesheet" href="/stylesheets/style.css"> -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/demo.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/component.css" />
+
+    <script src="/javascripts/modernizr.custom.25376.js"></script>
+     <script type="text/javascript"
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2WW-Hc3rjv4fwXNlMadJkUvM8Gv5oE1U & sensor=false"> 
+  </script>
+    <script data-require="jquery@2.1.1" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/bin/traceur.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/src/bootstrap.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bluebird/1.2.2/bluebird.min.js"></script>
+    <title>Query Interface</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+
+<body>
+    <div id="perspective" class="perspective effect-movedown">
+      <div class="container">
+        <div class="wrapper"><!-- wrapper needed for scroll -->
+          <!-- Top Navigation -->
+          <div class="codrops-top clearfix">
+            <a class="codrops-icon codrops-icon-prev" href="#"><span>nav</span></a>
+            <span class="right"><a class="codrops-icon codrops-icon-drop" href="#">
+              <span>nav</span></a></span>
+          </div>
+          <header class="codrops-header">
+            <h1>What points of interest (FourSquare venues) a specific user has visited in the last X days <span>Q(input: user id, plus X – value of X may be zero: in this case the streaming API must be used to capture information when it is published)</span></h1> 
+          </header>
+          <div class="main clearfix">
+            <div class="column">
+              <p><button id="showMenu">Navigator</button></p>
+              <p>Click here to navigate</p>
+              <form id="myForm" action="/2b" method="post" >
+                    user name: <input type="text" name="user_name" value=""><br>
+                    days: <input type="text" name="days" value=""><br>
+                    <input type="submit" value="Query">
+              </form>
+
+            </div>
+  
+             
+                 
+             <div class="column">
+              <a href="/2b" class="current-demo">Refresh to see venues list</a><span>
+                <% for (var i=1;i<venuesnamesb.length;i++){ %>
+                      <%var address=venuesnamesb[i].lati+ ','+ venuesnamesb[i].longti%>
+                      <%= venuesnamesb[i].venue_name%>
+                      <form id="myForm" action="/2bshowmap" method="post">
+                      <button name="clickbutton" type="submit"value="<%= address%>">Show points of interest</button>
+                      </form> 
+                <%}%>
+
+            </div>
+          </div>
+            <div class="related">
+              <p>All rights reserved by Pengyuan Zhao, Likang Cao, Shangshu Lu</p>
+              <p><a href="#">Contact us</a></p>
+              
+            </div>
+          </div><!-- /main -->
+        </div><!-- wrapper -->
+      </div><!-- /container -->
+      <nav class="outer-nav top horizontal">
+        <a href="/" class="icon-home">Question1</a>
+        <a href="/2a" class="icon-news">Question2A</a>
+        <a href="/2b" class="icon-image">Question2B</a>
+        <a href="/2c" class="icon-upload">Question2C</a>
+        <a href="/history" class="icon-star">Search History</a>
+        
+      </nav>
+    </div><!-- /perspective -->
+    <script src="/javascripts/classie.js"></script>
+    <script src="/javascripts/menu.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="description" content="">
+  	<meta name="author" content="">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  	<link rel="stylesheet" href="/stylesheets/normalize.css">
+  	<!-- <link rel="stylesheet" href="/stylesheets/skeleton.css"> -->
+  	<link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/demo.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/component.css" />
+    <script src="/javascripts/modernizr.custom.25376.js"></script>
+  	<script data-require="jquery@2.1.1" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/bin/traceur.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/src/bootstrap.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bluebird/1.2.2/bluebird.min.js"></script>
+    <title>Query Interface</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+<script>
+
+    function filter1(){
+        var text1 = document.getElementById("1a1").value;
+
+        if((text1.replace(/\s/g, "")).length==0){
+            alert("Query not in format");
+            return false;
+        }
+
+        if(text1.length>30) {
+            alert("too long!");
+            return false;
+        }
+    }    
+
+
+</script>
+<body>
+  <body onload = "getGeolocation()" >
+    <div id="perspective" class="perspective effect-movedown">
+      <div class="container">
+        <div class="wrapper"><!-- wrapper needed for scroll -->
+          <!-- Top Navigation -->
+          <div class="codrops-top clearfix">
+            <a class="codrops-icon codrops-icon-prev" href="#"><span>nav</span></a>
+            <span class="right"><a class="codrops-icon codrops-icon-drop" href="#">
+              <span>nav</span></a></span>
+          </div>
+          <header class="codrops-header">
+            <h1>Tracking discussions  <span>Tracking public discussions on specific topics (e.g. via hashtags or keywords): input keywords and/or hashtags. Output a list of messages containing the required keyword/hashtags. It must be possible to limit the query to a specific geographic region via latitude/longitude.</span></h1> 
+          </header>
+          <div class="main clearfix">
+            <div class="column">
+              <p><button id="showMenu">Navigator</button></p>
+              <p>Click here to navigate</p>
+              
+              <form id="ques1" action="/1" method="post" name="bbb">
+                <h4>Topic:</h4>
+                <input id="1a1" type ="text" name ="promise">
+                <h3>Local geocode:</h3>
+                <input id="1a2" type ="text" name="geo" disabled>
+                <script>
+
+                  function getGeolocation(){
+                    if (navigator.geolocation) {
+                             navigator.geolocation.watchPosition(setGeolocation);
+                        } else { 
+                            x.innerHTML = "Geolocation is not supported by this browser.";}
+                            return false;
+                    }
+                  function setGeolocation(position){
+                      //alert( position.coords.latitude+" "+position.coords.longitude);
+                      var lat =  position.coords.latitude;
+                      var lng = position.coords.longitude;
+                      document.getElementById("1a2").value =lat.toFixed(3)+","+lng.toFixed(3);
+                  }
+                    
+                </script>
+                <br>
+                <input type ="submit" value="Query" onclick="return filter1();">
+              </form>
+
+            </div>
+            <div class="column">
+              <nav class="codrops-demos">
+                <div id="table-scroll">
+                <table>
+                  <thead>
+                  <tr><th>Date</th><th> User</td> <th> content</th><th>view</th></tr>
+                  </thead>
+                  <tbody>
+                    <% for (var i=1;i<items.length;i++){ %>
+                    <tr><td><%= items[i].date %></td><td><%= items[i].author %></td><td><%= items[i].content %></td><td><a href='/Retweets/<%=items[i].id %>'>check retweeters</a></td></tr>
+                    <%}%>
+                  </tbody>
+                </table>
+              </div>
+              <div id="table-scroll">
+                <table>
+                  <thead>
+                    <tr><th>img</th><th>user name</th></tr>
+                  </thead>
+                  <tbody>
+                    <% for (var i=1;i<users.length;i++){ %>
+                    <tr><td><img src='<%=users[i].profile %>'></img></td><td><%= users[i].name %></td></tr>
+                    <%}%>
+                  </tbody>
+                </table>
+              </div>
+              </nav>
+            </div>
+            <div class="related">
+              <p>All rights reserved by Pengyuan Zhao, Likang Cao, Shangshu Lu</p>
+              <p><a href="#">Contact us</a></p>
+              
+            </div>
+          </div><!-- /main -->
+        </div><!-- wrapper -->
+      </div><!-- /container -->
+      <nav class="outer-nav top horizontal">
+        <a href="/" class="icon-home">Question1</a>
+        <a href="/2a" class="icon-news">Question2A</a>
+        <a href="/2b" class="icon-image">Question2B</a>
+        <a href="/2c" class="icon-upload">Question2C</a>
+        <a href="/history" class="icon-star">Search History</a>
+        
+      </nav>
+    </div><!-- /perspective -->
+    <script src="/javascripts/classie.js"></script>
+    <script src="/javascripts/menu.js"></script>
+  </body>
+</html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/stylesheets/normalize.css">
+    <!-- <link rel="stylesheet" href="/stylesheets/skeleton.css"> -->
+    <!-- <link rel="stylesheet" href="/stylesheets/style.css"> -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/demo.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/component.css" />
+
+    <script src="/javascripts/modernizr.custom.25376.js"></script>
+     <script type="text/javascript"
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2WW-Hc3rjv4fwXNlMadJkUvM8Gv5oE1U & sensor=false"> 
+  </script>
+    <script data-require="jquery@2.1.1" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/bin/traceur.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/src/bootstrap.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bluebird/1.2.2/bluebird.min.js"></script>
+    <title>Query Interface</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+
+<body>
+    <div id="perspective" class="perspective effect-movedown">
+      <div class="container">
+        <div class="wrapper"><!-- wrapper needed for scroll -->
+          <!-- Top Navigation -->
+          <div class="codrops-top clearfix">
+            <a class="codrops-icon codrops-icon-prev" href="#"><span>nav</span></a>
+            <span class="right"><a class="codrops-icon codrops-icon-drop" href="#">
+              <span>nav</span></a></span>
+          </div>
+          <header class="codrops-header">
+            <h1>What points of interest (FourSquare venues) a specific user has visited in the last X days <span>Q(input: user id, plus X – value of X may be zero: in this case the streaming API must be used to capture information when it is published)</span></h1> 
+          </header>
+          <div class="main clearfix">
+            <div class="column">
+              <p><button id="showMenu">Navigator</button></p>
+              <p>Click here to navigate</p>
+              <form id="myForm" action="/2b" method="post" >
+                    user name: <input type="text" name="user_name" value=""><br>
+                    days: <input type="text" name="days" value=""><br>
+                    <input type="submit" value="Query">
+              </form>
+
+            </div>
+            <%for(var i=0;i<itemsb.length;i++){%>
+                  <%=itemsb[i].lati%>,<%=itemsb[i].longti%> <%=itemsb[i].venue_name%><%=itemsb[i].venue_id%>
+                  <%}%>
+  
+             
+                 
+             <div class="column_py">
+               <div id="map-canvas" style="background-color:#FFD700;width:70%;height:300pt;align:center;">
+
+            </div>
+          </div>
+            <div class="related">
+              <p>All rights reserved by Pengyuan Zhao, Likang Cao, Shangshu Lu</p>
+              <p><a href="#">Contact us</a></p>
+              
+            </div>
+          </div><!-- /main -->
+        </div><!-- wrapper -->
+      </div><!-- /container -->
+      <nav class="outer-nav top horizontal">
+        <a href="/" class="icon-home">Question1</a>
+        <a href="/2a" class="icon-news">Question2A</a>
+        <a href="/2b" class="icon-image">Question2B</a>
+        <a href="/2c" class="icon-upload">Question2C</a>
+        <a href="/history" class="icon-star">Search History</a>
+        
+      </nav>
+    </div><!-- /perspective -->
+    <script src="/javascripts/classie.js"></script>
+    <script src="/javascripts/menu.js"></script>
+  </body>
+  <script>
+      function initialize(){
+          <%for(var i=0;i<itemsb.length;i++){%>
+
+            var myLatlng = new google.maps.LatLng(<%=itemsb[0].lati%>,<%=itemsb[0].longti%>);  
+         <%}%>
+
+          var mapOptions = {
+          zoom: 15,
+          center: myLatlng 
+          }
+       var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+       // To add the marker to the map, use the 'map' property 
+
+       <%for(var i=0;i<itemsb.length;i++){%>
+                // var venue_name = <%=itemsb[i].venue_name%>;
+                // var venue_id = <%=itemsb[i].venue_id%>;
+                //var myurl="https://foursquare.com/v/"<%=itemsb[i].venue_name%>"/"<%=itemsb[i].venue_id%>;
+               // var myurl: "http://www.google.com";
+                 var marker = new google.maps.Marker({
+                      position: new google.maps.LatLng(<%=itemsb[i].lati%>,<%=itemsb[i].longti%>), 
+                      map: map, 
+                      url: "https://foursquare.com/v/<%=itemsb[i].venue_name%>/<%=itemsb[i].venue_id%>",
+                      title:"Hello World!"
+                 });
+                
+                 google.maps.event.addListener(marker, 'click', function() {
+                        //window.location.href = marker.url;
+                        window.location.href = "https://foursquare.com/v/<%=itemsb[i].venue_name%>/<%=itemsb[i].venue_id%>"
+                  }); 
+                 
+      <%}%>
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+
+  
+ 
+</script>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/stylesheets/normalize.css">
+    <!-- <link rel="stylesheet" href="/stylesheets/skeleton.css"> -->
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/demo.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/component.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/elastislide.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/custom.css" />
+    <script src="/javascripts/modernizr.custom.17475.js"></script>
+    <script src="/javascripts/modernizr.custom.25376.js"></script>
+    <script data-require="jquery@2.1.1" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/bin/traceur.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/src/bootstrap.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bluebird/1.2.2/bluebird.min.js"></script>
+    <title>Query Interface</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+<script>
+  function sendData() {
+          LSSClearOldResult();
+          var form= document.getElementById('ques1');
+          sendAjaxQuery('/promiseTest', JSON.stringify($('form').serializeObject()));
+      }
+  var sendButton = document.getElementById('query');
+    sendButton.onclick = sendData;
+</script>
+<body>
+  <body onload = 
+    <div id="perspective" class="perspective effect-movedown">
+      <div class="container">
+        <div class="wrapper"><!-- wrapper needed for scroll -->
+          <!-- Top Navigation -->
+          <div class="codrops-top clearfix">
+            <a class="codrops-icon codrops-icon-prev" href="#"><span>nav</span></a>
+            <span class="right"><a class="codrops-icon codrops-icon-drop" href="#">
+              <span>nav</span></a></span>
+          </div>
+          <header class="codrops-header">
+            <h1> History <span>All search history</span></h1> 
+          </header>
+          <div class="main clearfix">
+            <div class="column">
+              <p><button id="showMenu">Navigator</button></p>
+              <p>Click here to navigate</p>
+              <form id="ques1" action="/searchVenueHistory" method="post">
+                <input type ="submit" value="Search Venue History">
+              </form>
+            </div>
+            <div class="column_self">
+              <div class="container demo-1">
+                  <h3> Press venue image to see who has visited there</h3>
+                  <div class="main">
+                      <ul id="carousel" class="elastislide-list">
+                       <% for(i=1;i<venu.length;i++){%>
+                        <li><a href="/2c"><img src='<%= venu[i].url %>' alt="#" /></a><h3><%= venu[i].name %></h3></li>
+                      <% } %>
+                    </ul> 
+                  </div>
+                </div>
+              <nav class="codrops-demos">
+                <h1>To be finished ..... </h1>    
+              </nav>
+            </div>
+            <div class="related">
+              <p>All rights reserved by Pengyuan Zhao, Likang Cao, Shangshu Lu</p>
+              <p><a href="#">Contact us</a></p>
+              
+            </div>
+          </div><!-- /main -->
+        </div><!-- wrapper -->
+      </div><!-- /container -->
+      <nav class="outer-nav top horizontal">
+        <a href="/" class="icon-home">Question1</a>
+        <a href="/2a" class="icon-news">Question2A</a>
+        <a href="/2b" class="icon-image">Question2B</a>
+        <a href="/2c" class="icon-upload">Question2C</a>
+        <a href="/history" class="icon-star">Search History</a>
+        
+      </nav>
+    </div><!-- /perspective -->
+    <script src="/javascripts/classie.js"></script>
+    <script src="/javascripts/menu.js"></script>
+  </body>
+  <script
+  src="http://maps.googleapis.com/maps/api/js">
+</script>
+
+<script>
+    var myCenter=new google.maps.LatLng(51.508742,-0.120850);
+
+    function initialize()
+    {
+    var mapProp = {
+      center:myCenter,
+      zoom:5,
+      mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
+
+    var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+    var marker=new google.maps.Marker({
+      position:myCenter,
+      });
+
+    marker.setMap(map);
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquerypp.custom.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.elastislide.js"></script>
+    <script type="text/javascript">
+      
+      $( '#carousel' ).elastislide();
+      
+    </script>
+</html>

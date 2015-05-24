@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/stylesheets/normalize.css">
+    <!-- <link rel="stylesheet" href="/stylesheets/skeleton.css"> -->
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/demo.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/component.css" />
+    <script src="/javascripts/modernizr.custom.25376.js"></script>
+    <script data-require="jquery@2.1.1" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/bin/traceur.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/src/bootstrap.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+    <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css"
+        rel="stylesheet" type="text/css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bluebird/1.2.2/bluebird.min.js"></script>
+    <title>Query Interface</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+<script>
+    function filter2c(){
+        var text1 = document.getElementById("2c1").value;
+        var text2 = document.getElementById("2c2").value;
+
+        if((text1.replace(/\s/g, "")).length==0){
+            alert("Name cannot be Null");
+            return false;
+        }
+
+else if(text2!=''){
+
+        if(isNaN(text2)||(parseInt(text2)!=text2)) {
+            alert("Days not INT!");
+            return false;
+        }
+
+        else if((text2<1)||(text2>7)) {
+            alert("Days out of range!");
+            return false;
+        }
+
+    }}
+</script>
+<body>
+    <div id="perspective" class="perspective effect-movedown">
+      <div class="container">
+        <div class="wrapper"><!-- wrapper needed for scroll -->
+          <!-- Top Navigation -->
+          <div class="codrops-top clearfix">
+            <a class="codrops-icon codrops-icon-prev" href="#"><span>nav</span></a>
+            <span class="right"><a class="codrops-icon codrops-icon-drop" href="#">
+              <span>nav</span></a></span>
+          </div>
+          <header class="codrops-header">
+            <h1> Who is visiting venues in a specific geographic area (or checking in at a FourSquare venue) or have done so in the last X days  <span>input: name of location or coordinates, plus X – value of X may be zero: in this case the Twitter streaming API must be used to capture information when it is published</span></h1> 
+          </header>
+          <div class="main clearfix">
+            <div class="column">
+              <p><button id="showMenu">Navigator</button></p>
+              <p>Click here to navigate</p>
+              <form id="myForm" action="/2cQuery" method="post" >
+                Location:
+                  <input id="2c1" type="text" name="location" value=""><br>Days:
+                  <input id="2c2" type="text" name="days" value=""><br>
+                  <input type="submit" value="Query" onclick="return filter2c();">
+              </form>
+              <br><br>
+              <hr>
+              <!-- <button id="show_map " onclick = addMarker() value="<%= venueInfo%>">show map</button>  -->
+              <div id="googleMap" style="width:300px;height:280px;"></div>
+              <h3 id="myMap" onclick="addMarker()" >click location to get marker:</h3>
+                <% for(var i=0; i<venueInfo.length;i++){ %>
+                  <h3 id="<%=venueInfo[i].name%>" onclick="addMarker('<%=venueInfo[i].id%>','<%=venueInfo[i].name%>','<%=venueInfo[i].lat%>','<%=venueInfo[i].lng%>','<%=venueInfo[i].address%>','<%=venueInfo[i].city%>','<%=venueInfo[i].postalCode%>','<%=venueInfo[i].photourl%>')">
+                   
+                    <%=venueInfo[i].name%> 
+                    
+                  </h3>
+                  <%}%>
+            </div>
+            <div class="column">
+              <nav class="codrops-demos">
+                <div>
+                <a href="/2c" class="current-demo">Click to see users List</a><span>
+                <input id="btnShow" type="button" value="Show Nearby Users" /></span>
+              </div>
+                <!-- <form id="poi_foursquare" action="/2cPOIFoursquare" method="post" >
+                  <input id="btnShow1" type="submit" value="show points of interest--foursquare"> 
+                  
+                </form><br>
+
+                <form id="poi_dbpedia" action="/2cPOIDBpedia" method="post" >
+                  <input type="submit" value="show points of interest--DBpeida">
+                </form> -->
+               
+                <div id="dialog" style="display: none">
+                    <div id="dvMap" style="height: 380px; width: 580px;">
+                    </div>
+                </div>
+                
+                <div id="table-scroll">
+                  <table>
+                    <h3> Users who have been there </h3>
+                    <thead>
+                      <tr><th>img</th><th>user name</th><th>tweeter name</th><th>location</th><th>profile</th><th>timeline</th></tr>
+                    </thead>
+                    <tbody>
+                      <% for (var i=1;i<venueUsers.length;i++){ %>
+                      <tr>
+                        <td><img src='<%=venueUsers[i].profile %>'></img></td><td><%= venueUsers[i].name %></td>
+                        <td><%= venueUsers[i].tweetName %></td><td><%= venueUsers[i].location %></td><td><%= venueUsers[i].description %></td><td><a href='/timeline/<%=venueUsers[i].tweetName %>'>timeline</td>
+                      </tr>
+                      <%}%>
+                    </tbody>
+                  </table>
+              </div>
+              <div id="table-scroll">
+                <table>
+                  <h3>User Timeline</h3>
+                  <thead>
+                    <tr><th>date</th><th>text</th></tr>
+                  </thead>
+                  <tbody>
+                    <% for (var i=1;i<tweetTimeline.length;i++){ %>
+                  <tr>
+                  <td><%=tweetTimeline[i].date %></td><td><%= tweetTimeline[i].text %></td>
+                  </tr>
+                  <%}%>
+                  </tbody>
+                </table>
+              </nav>
+            </div>
+          </div>
+            <div class="related">
+              <p>All rights reserved by Pengyuan Zhao, Likang Cao, Shangshu Lu</p>
+              <p><a href="#">Contact us</a></p>
+              
+            </div>
+          </div><!-- /main -->
+        </div><!-- wrapper -->
+      </div><!-- /container -->
+      <nav class="outer-nav top horizontal">
+        <a href="/" class="icon-home">Question1</a>
+        <a href="2a" class="icon-news">Question2A</a>
+        <a href="2b" class="icon-image">Question2B</a>
+        <a href="2c" class="icon-upload">Question2C</a>
+        <a href="/history" class="icon-star">Search History</a>
+        
+      </nav>
+    </div><!-- /perspective -->
+    <script src="/javascripts/classie.js"></script>
+    <script src="/javascripts/menu.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+    <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css"
+        rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        $(function () {
+            $("#btnShow").click(function () {
+                $("#dialog").dialog({
+                    modal: true,
+                    title: "Google Map",
+                    width: 600,
+                    hright: 450,
+                    buttons: {
+                        Close: function () {
+                            $(this).dialog('close');
+                        }
+                    },
+                    open: function () {
+                        var mapOptions = {
+                            center: new google.maps.LatLng(53.38, -1.42),
+                            zoom: 12,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        }
+                        var map = new google.maps.Map($("#dvMap")[0], mapOptions);
+                    }
+                });
+            });
+        });
+    </script>
+    
+    
+  </body>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD2WW-Hc3rjv4fwXNlMadJkUvM8Gv5oE1U&sensor=false">
+</script>
+<script>
+
+  submitForms = function(){
+      document.getElementById("myForm").submit();
+      document.getElementById("myForm_1").submit();
+  }
+
+</script>
+<script >
+
+   // var myCenter=new google.maps.LatLng(53.388742,-1.460850);
+
+   // function initialize()
+   //  {
+   //    var mapProp = {
+   //      center:myCenter,
+   //      zoom:12,
+   //      mapTypeId:google.maps.MapTypeId.ROADMAP
+   //      };
+
+   //    var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+    
+   //     <% for (i=0;i<venueInfo.length;i++) {%>
+   //        marker = new google.maps.Marker({
+   //          position: new google.maps.LatLng(<%=venueInfo[i].lat%>,<%=venueInfo[i].lng %>),
+   //          map:map,
+   //          //title: <%= venueInfo[i].name%>,
+   //          icon:'http://icons.iconarchive.com/icons/icons8/windows-8/16/Cinema-Human-Head-icon.png',
+   //        });
+          
+   //           marker.info = new google.maps.InfoWindow({
+   //            content: "<%=venueInfo[i].name%>"
+   //          });
+          
+   //        google.maps.event.addDomListener(marker,'click',function(){
+   //            this.info.open(map, marker);
+   //          });
+          
+   //      <%}%>
+   //   }
+   //  google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+<script type="text/javascript">
+
+  function changedate(days){
+    var d = new Date();
+    var curr_date = d.getDate()-days;
+    var curr_month = d.getMonth() + 1; //Months are zero based
+    var curr_year = d.getFullYear();
+    var day = curr_year+"-"+curr_month+"-"curr_date;
+    //alert(curr_date + "-" + curr_month + "-" + curr_year);
+    return day;
+  }
+
+//alert(dat.addDays(5))
+</script>
+<script>
+
+    function addMarker(id,name,lat,lng,address,city,postcode,photourl){
+      var x=document.getElementById(name);
+      //alert("searcing details for: "+name);
+
+      var myCenter=new google.maps.LatLng(53.388742,-1.460850);
+      var newCenter=new google.maps.LatLng(lat,lng);
+      var mapProp = {
+        center:myCenter,
+        zoom:12,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
+      var maps = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+      var infowindow = new google.maps.InfoWindow({
+        content: '<div id="content">'+
+                  '<div id="siteNotice">'+
+                  '</div>'+
+                  '<h3 id="firstHeading" class="firstHeading">'+name+'</h3>'+
+                  '<div id="bodyContent">'+
+                  '<p><b>'+address+'</b><br><b>'+city+'</b><br><b>'+postcode+'</b></p>'+
+                  '</div>'+
+                  '</div>'
+         });
+      var markers =new google.maps.Marker({
+            position:newCenter,
+            title:name,
+            icon:'http://icons.iconarchive.com/icons/icons8/windows-8/16/Cinema-Human-Head-icon.png',
+            });
+        markers.setMap(maps);
+        infowindow.open(maps,markers);
+    }
+    
+    var myCenter=new google.maps.LatLng(53.388742,-1.460850);
+
+    function initialize()
+    {
+      var mapProp = {
+        center:myCenter,
+        zoom:8,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+        };
+
+      var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+     }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</html>

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/stylesheets/normalize.css">
+    <!-- <link rel="stylesheet" href="/stylesheets/skeleton.css"> -->
+    <!-- <link rel="stylesheet" href="/stylesheets/style.css"> -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/demo.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/component.css" />
+    <script src="/javascripts/modernizr.custom.25376.js"></script>
+    <script data-require="jquery@2.1.1" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/bin/traceur.js"></script>
+    <script data-require="traceur@*" data-semver="0.0.0-20140302" src="https://traceur-compiler.googlecode.com/git/src/bootstrap.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bluebird/1.2.2/bluebird.min.js"></script>
+    <title>Query Interface</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+</head>
+<script>
+  function filter2a() {
+    var text1 = document.getElementById("2a1").value;
+    var text2 = document.getElementById("2a2").value;
+    var text3 = document.getElementById("2a3").value;
+
+    for (i = 0; i < text1.split(",").length; i++) {
+      var text11 = text1.split(",")[i];
+      if ((text11.replace(/\s/g, "")).length == 0) {
+        alert("Name not in format");
+        return false;
+        break;
+      }
+    }
+
+    if ((text1.split(",")).length > 2) {
+      alert("Name out if range");
+      return false;
+    }
+
+    else if (isNaN(text2) || (parseInt(text2) != text2)) {
+      alert("KW not INT!");
+      return false;
+    }
+
+    else if ((text2 < 1) || (text2 > 7)) {
+      alert("KW out of range!");
+      return false;
+    }
+
+    else if (isNaN(text3) || (parseInt(text3) != text3)) {
+      alert("Days not INT!");
+      return false;
+    }
+
+    else if ((text3 < 1) || (text3 > 7)) {
+      alert("Days out of range!");
+      return false;
+    }
+  }
+</script>
+
+<script>
+</script>
+<body>
+    <div id="perspective" class="perspective effect-movedown">
+      <div class="container">
+        <div class="wrapper"><!-- wrapper needed for scroll -->
+          <!-- Top Navigation -->
+          <div class="codrops-top clearfix">
+            <a class="codrops-icon codrops-icon-prev" href="#"><span>nav</span></a>
+            <span class="right"><a class="codrops-icon codrops-icon-drop" href="#">
+              <span>nav</span></a></span>
+          </div>
+          <header class="codrops-header">
+            <h1>What specific users discuss about:  <span>the ids/screen_names of up to 10 users are provided in
+input and the most frequent Y keywords common to all users2 in the last Z days must be displayed (with associated total count, as well as count for each users). Input: user ids, Y, Z – with Z >1</span></h1> 
+          </header>
+          <div class="main clearfix">
+            <div class="column">
+              <p><button id="showMenu">Navigator</button></p>
+              <p>Click here to navigate</p>
+              <form id="ques2a" action="/2aQuery" method="post">
+                <input id="2a1" type ="text" name ="query"><br>
+                <input id="2a2" type ="text" name ="keyword"><br>
+                <input id="2a3" type ="text" name ="days"><br>
+                <input type ="submit" value="test" onclick="return filter2a();">
+              </form>
+
+            </div>
+            <div class="column">
+              <nav class="codrops-demos">
+                
+                <table>
+                  <thead>
+                  <!--<tr><th>Date</th><th> User</td> <th> content</th><th>view</th></tr>-->
+                  <tr>
+                  <% for(i=0;i<(tweetKeywords[0]).length;i++){ %>
+                    <th><%= tweetKeywords[0][i] %></th>
+                  <% } %>
+                  </tr>
+                  </thead>
+                  <tbody>
+                   <% for(n=1;n<tweetKeywords.length;n++){ %><tr><%
+                        for(i=0;i<(tweetKeywords[n]).length;i++){ %>
+
+                        <td><%= tweetKeywords[n][i] %></td>
+                    <%    } %>
+                  </tr>
+                <%
+
+                  }   %>
+
+
+
+                  </tbody>
+                </table>
+                
+              </nav>
+            </div>
+            <div class="related">
+              <p>All rights reserved by Pengyuan Zhao, Likang Cao, Shangshu Lu</p>
+              <p><a href="#">Contact us</a></p>
+              
+            </div>
+          </div><!-- /main -->
+        </div><!-- wrapper -->
+      </div><!-- /container -->
+      <nav class="outer-nav top horizontal">
+        <a href="/" class="icon-home">Question1</a>
+        <a href="/2a" class="icon-news">Question2A</a>
+        <a href="/2b" class="icon-image">Question2B</a>
+        <a href="/2c" class="icon-upload">Question2C</a>
+        <a href="/history" class="icon-star">Search History</a>
+        
+      </nav>
+    </div><!-- /perspective -->
+    <script src="/javascripts/classie.js"></script>
+    <script src="/javascripts/menu.js"></script>
+  </body>
+</html>
