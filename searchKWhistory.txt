@@ -1,0 +1,35 @@
+app.post('/searchKWHistory',function(req,res){
+    var kwResult = [];
+    var queryString = 'SELECT * FROM keyword';
+    //database query.
+    conn.query(queryString, function(err, rows, fields){
+        if(err) throw err;
+        for (var i in rows){
+            kwResult.push({screenname:rows[i].screenname, keywords:rows[i].keywords, url:rows[i].url});
+        }
+        var kwRes = [[kwResult[0].screenname,kwResult[0].keywords,kwResult[0].url]];
+        //repetition checking.
+        for(i=0;i<kwResult.length;i++){
+            for(n=0;n<kwRes.length;n++){
+                if (kwRes[n][0] == kwResult[i].screenname) {
+                    for (k = 0; k < kwRes[n][1].split(",").length; k++) {
+                        if ((kwRes[n][1].split(",")[k] != kwResult[i].keywords) && (k == kwRes[n][1].split(",").length - 1))
+                            kwRes[n][1] += ("," + kwResult[i].keywords);
+                        else if (kwRes[n][1].split(",")[k] == kwResult[i].keywords)
+                            break;
+                    }
+                }
+
+                if (n == (kwRes.length - 1) && kwRes[n][0] != kwResult[i].screenname) {
+                    kwRes[n + 1] = new Array();
+                    kwRes[n + 1][0] = kwResult[i].screenname;
+                    kwRes[n + 1][1] = kwResult[i].keywords;
+                    kwRes[n + 1][2] = kwResult[i].url;
+                }
+            }
+
+        }
+        sqlKws = kwRes;
+    });
+    res.redirect('/history');
+});
